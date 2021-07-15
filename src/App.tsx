@@ -1,25 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import ApplicationContext from './contexts';
+import { Dashboard, OrdersPage, SettingsPage } from './pages/app';
+import { ForgotPasswordPage, LoginPage } from './pages/auth';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 3,
+    },
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <ApplicationContext>
+          <Switch>
+            <Route exact path="/" component={LoginPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/forgot-password" component={ForgotPasswordPage} />
+
+            <Route path="/app/dashboard" component={Dashboard} />
+            <Route path="/app/orders" component={OrdersPage} />
+            <Route path="/app/settings" component={SettingsPage} />
+
+            <Redirect to="/" />
+          </Switch>
+        </ApplicationContext>
+      </QueryClientProvider>
+    </BrowserRouter>
   );
 }
 

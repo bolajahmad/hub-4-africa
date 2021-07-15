@@ -1,0 +1,2 @@
+export * from './dashbord.view';
+
