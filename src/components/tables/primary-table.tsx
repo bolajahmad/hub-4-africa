@@ -47,8 +47,19 @@ interface Props<T extends object> extends TableOptions<T> {
   breakpoint?: number;
 }
 
-export const PrimaryTable = function <T extends object = any>({ collectionName, columns, data, breakpoint }: Props<T>) {
-  const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows }: TableInstance<any> = useTable({
+export const PrimaryTable = function <T extends object = any>({
+  collectionName,
+  columns,
+  data,
+  breakpoint,
+}: Props<T>) {
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    rows,
+  }: TableInstance<any> = useTable({
     columns,
     data,
   });

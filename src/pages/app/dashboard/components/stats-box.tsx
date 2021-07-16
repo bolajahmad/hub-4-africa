@@ -77,7 +77,12 @@ export interface DashboardStatsProps {
   icon: string;
 }
 
-export const StatsBox: React.FC<DashboardStatsProps> = ({ name, value, color, icon }) => {
+export const StatsBox: React.FC<DashboardStatsProps> = ({
+  name,
+  value,
+  color,
+  icon,
+}) => {
   return (
     <Wrapper>
       <IconStyle color={color}>

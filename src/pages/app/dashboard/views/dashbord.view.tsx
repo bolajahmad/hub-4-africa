@@ -20,14 +20,24 @@ export const DashboardView: React.FC = () => {
     <Wrapper width={width}>
       <div className="stats-box">
         {dashboardStats.map(({ name, value, color, icon }, i) => (
-          <StatsBox key={i + name} name={name} icon={icon} value={value} color={color} />
+          <StatsBox
+            key={i + name}
+            name={name}
+            icon={icon}
+            value={value}
+            color={color}
+          />
         ))}
       </div>
 
       <div className="table-wrapper">
         <div className="bold-8">Shipment History</div>
 
-        <PrimaryTable collectionName="Shipment history" data={[]} columns={[]} />
+        <PrimaryTable
+          collectionName="Shipment history"
+          data={[]}
+          columns={[]}
+        />
       </div>
     </Wrapper>
   );

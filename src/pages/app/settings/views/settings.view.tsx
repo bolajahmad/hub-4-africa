@@ -9,15 +9,20 @@ export const SettingsView: React.FC = () => {
 
   return (
     <SettingsPageWrapper width={width}>
-      <AnimatePresence>{isUpdating && <SettingsUpdateDrawer closeDrawer={() => setUpdating(false)} />}</AnimatePresence>
+      <AnimatePresence>
+        {isUpdating && (
+          <SettingsUpdateDrawer closeDrawer={() => setUpdating(false)} />
+        )}
+      </AnimatePresence>
       <div className="container">
         <ul className="list">
           <li className="list-item">
             <div className="text">
               <h3>Update Warehouse</h3>
               <p>
-                Add new data to the list of warehouse provided Add new data to the list of warehouse provided Add new
-                data to the list of warehouse provided{' '}
+                Add new data to the list of warehouse provided Add new data to
+                the list of warehouse provided Add new data to the list of
+                warehouse provided{' '}
               </p>
             </div>
             <div className="btn-box">
@@ -28,8 +33,9 @@ export const SettingsView: React.FC = () => {
             <div className="text">
               <h3>Update Package Conditions</h3>
               <p>
-                Add new data to the list of warehouse provided Add new data to the list of warehouse provided Add new
-                data to the list of warehouse provided{' '}
+                Add new data to the list of warehouse provided Add new data to
+                the list of warehouse provided Add new data to the list of
+                warehouse provided{' '}
               </p>
             </div>
             <div className="btn-box">
@@ -42,8 +48,9 @@ export const SettingsView: React.FC = () => {
             <div className="text">
               <h3>Update Shipping Channels </h3>
               <p>
-                Add new data to the list of warehouse provided Add new data to the list of warehouse provided Add new
-                data to the list of warehouse provided{' '}
+                Add new data to the list of warehouse provided Add new data to
+                the list of warehouse provided Add new data to the list of
+                warehouse provided{' '}
               </p>
             </div>
             <div className="btn-box">
@@ -54,8 +61,9 @@ export const SettingsView: React.FC = () => {
             <div className="text">
               <h3>Update Admin Role</h3>
               <p>
-                Add new data to the list of warehouse provided Add new data to the list of warehouse provided Add new
-                data to the list of warehouse provided{' '}
+                Add new data to the list of warehouse provided Add new data to
+                the list of warehouse provided Add new data to the list of
+                warehouse provided{' '}
               </p>
             </div>
             <div className="btn-box">

@@ -1,4 +1,8 @@
-export type ShipmentProgressType = 'INPROGRESS' | 'RECEIVED' | 'READY' | 'DELIVERED';
+export type ShipmentProgressType =
+  | 'INPROGRESS'
+  | 'RECEIVED'
+  | 'READY'
+  | 'DELIVERED';
 
 export interface OrdersModel {
   id: string;

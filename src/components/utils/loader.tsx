@@ -17,7 +17,12 @@ const Wrapper = styled.div<LoaderProps>`
   align-items: center;
   justify-content: center;
   gap: 5px;
-  font-size: ${({ fontSize }) => (fontSize === 'normal' ? '0.9rem' : fontSize === 'large' ? '1.2rem' : '0.8rem')};
+  font-size: ${({ fontSize }) =>
+    fontSize === 'normal'
+      ? '0.9rem'
+      : fontSize === 'large'
+      ? '1.2rem'
+      : '0.8rem'};
 
   > * + * {
     margin-top: 1.5em;
@@ -44,8 +49,10 @@ const Wrapper = styled.div<LoaderProps>`
     transform: translateZ(0);
     -webkit-animation: ${loading} 1.1s infinite linear;
     animation: ${loading} 1.1s infinite linear;
-    border: ${({ borderWidth, bodyColor }) => `${borderWidth}px solid ${bodyColor}`};
-    border-left: ${({ borderWidth, headColor }) => `${borderWidth}px solid ${headColor}`};
+    border: ${({ borderWidth, bodyColor }) =>
+      `${borderWidth}px solid ${bodyColor}`};
+    border-left: ${({ borderWidth, headColor }) =>
+      `${borderWidth}px solid ${headColor}`};
   }
 `;
 
@@ -67,7 +74,13 @@ export const LoaderComponent: React.FC<LoaderProps> = ({
   bodyColor = '#99d290',
 }) => {
   return (
-    <Wrapper size={size} fontSize={fontSize} borderWidth={borderWidth} headColor={headColor} bodyColor={bodyColor}>
+    <Wrapper
+      size={size}
+      fontSize={fontSize}
+      borderWidth={borderWidth}
+      headColor={headColor}
+      bodyColor={bodyColor}
+    >
       <div className="loader" />
       {text && <div className="text bold uppercase">{text}</div>}
     </Wrapper>

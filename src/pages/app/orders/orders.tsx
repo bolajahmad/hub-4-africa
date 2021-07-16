@@ -3,7 +3,12 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import { AppLayout, Page } from '../../../components';
 import { NestedPath, useWindowDimensions } from '../../../utils';
-import { OrderStatusView, OrdersView, PendingOrdersView, TrackOrdersView } from './views';
+import {
+  OrderStatusView,
+  OrdersView,
+  PendingOrdersView,
+  TrackOrdersView,
+} from './views';
 
 const nestedPath = new NestedPath('app/orders');
 
@@ -17,9 +22,18 @@ export const OrdersPage: React.FC = () => {
           <AnimatePresence>
             {/* path components must be wrapped in a motion component */}
             <Route exact path={nestedPath.getPath('')} component={OrdersView} />
-            <Route path={nestedPath.getPath('all')} component={PendingOrdersView} />
-            <Route path={nestedPath.getPath('track')} component={TrackOrdersView} />
-            <Route path={nestedPath.getPath('status')} component={OrderStatusView} />
+            <Route
+              path={nestedPath.getPath('all')}
+              component={PendingOrdersView}
+            />
+            <Route
+              path={nestedPath.getPath('track')}
+              component={TrackOrdersView}
+            />
+            <Route
+              path={nestedPath.getPath('status')}
+              component={OrderStatusView}
+            />
             <Redirect to={nestedPath.getPath('')} />
           </AnimatePresence>
         </Switch>

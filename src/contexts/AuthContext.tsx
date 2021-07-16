@@ -23,36 +23,49 @@ export interface AuthContextInterface {
   error: Error;
 }
 
-const Context = React.createContext<AuthContextInterface | undefined>(undefined);
+const Context = React.createContext<AuthContextInterface | undefined>(
+  undefined
+);
 
 const AuthContext: React.FC<AuthContextProps> = ({ children }) => {
-  const TOKEN = StorageService.getFromLocal<TokenDetailsModel>(StorageEnums.TOKEN_DETAILS)!;
-  const [isAuthenticated, setIsAuthenticated] = React.useState(!!TOKEN && !!TOKEN.token);
+  const TOKEN = StorageService.getFromLocal<TokenDetailsModel>(
+    StorageEnums.TOKEN_DETAILS
+  )!;
+  const [isAuthenticated, setIsAuthenticated] = React.useState(
+    !!TOKEN && !!TOKEN.token
+  );
   const [account, setAccount] = React.useState<AuthenticatedUser | null>(null);
   const history = useHistory();
 
-  const { mutate, isLoading, isError, isSuccess, error } = useMutation(AuthService.login, {
-    onSuccess: ({ payload }) => {
-      if (payload) {
-        setAccount(payload);
-        StorageService.setToLocal(StorageEnums.AUTH_TOKEN, payload.token);
-        StorageService.setToLocal(StorageEnums.TOKEN_DETAILS, {
-          token: payload.token,
-          refreshToken: payload.refreshToken,
-          tokenExpiryTime: payload.tokenExpiryTime,
-          updatedAt: payload.updatedAt,
-        } as TokenDetailsModel);
-        StorageService.setToLocal(StorageEnums.REFRESH_TOKEN, payload.refreshToken, 2592000000);
-        history.push('/app/dashboard');
-      }
-    },
-  });
+  const { mutate, isLoading, isError, isSuccess, error } = useMutation(
+    AuthService.login,
+    {
+      onSuccess: ({ payload }) => {
+        if (payload) {
+          setAccount(payload);
+          StorageService.setToLocal(StorageEnums.AUTH_TOKEN, payload.token);
+          StorageService.setToLocal(StorageEnums.TOKEN_DETAILS, {
+            token: payload.token,
+            refreshToken: payload.refreshToken,
+            tokenExpiryTime: payload.tokenExpiryTime,
+            updatedAt: payload.updatedAt,
+          } as TokenDetailsModel);
+          StorageService.setToLocal(
+            StorageEnums.REFRESH_TOKEN,
+            payload.refreshToken,
+            2592000000
+          );
+          history.push('/app/dashboard');
+        }
+      },
+    }
+  );
 
   const login = React.useCallback(
     (user: LoginModel) => {
       mutate(user);
     },
-    [mutate],
+    [mutate]
   );
 
   const logout = React.useCallback(() => {

@@ -5,23 +5,31 @@ export class StorageService {
     const now = new Date();
 
     const cacheValue = {
-      value, expiryTime: now.getTime() + expiry,
+      value,
+      expiryTime: now.getTime() + expiry,
     };
 
     localStorage.setItem(key, JSON.stringify(cacheValue));
   }
 
-  public static saveToSession(key: StorageEnums, value: any, expiry = 10800000) {
+  public static saveToSession(
+    key: StorageEnums,
+    value: any,
+    expiry = 10800000
+  ) {
     const now = new Date();
 
     const sessionValue = {
-      value, expiryTime: now.getTime() + expiry,
+      value,
+      expiryTime: now.getTime() + expiry,
     };
 
     sessionStorage.setItem(key, JSON.stringify(sessionValue));
   }
 
-  public static getFromLocal<ResponseType>(key: StorageEnums): ResponseType | null {
+  public static getFromLocal<ResponseType>(
+    key: StorageEnums
+  ): ResponseType | null {
     const cacheData = localStorage.getItem(key);
 
     if (!cacheData) {
@@ -30,7 +38,7 @@ export class StorageService {
 
     const data: { value: any; expiryTime: number } = JSON.parse(cacheData);
 
-    if ((new Date()).getTime() > data.expiryTime) {
+    if (new Date().getTime() > data.expiryTime) {
       localStorage.removeItem(key);
       return null;
     } else {
@@ -39,10 +47,14 @@ export class StorageService {
   }
 
   public static removeFromLocal(key: StorageEnums | StorageEnums[]): void {
-    Array.isArray(key) ? key.forEach((cache) => localStorage.removeItem(cache)) : localStorage.removeItem(key);
+    Array.isArray(key)
+      ? key.forEach((cache) => localStorage.removeItem(cache))
+      : localStorage.removeItem(key);
   }
 
-  public static getFromSession<ResponseType>(key: StorageEnums): ResponseType | null {
+  public static getFromSession<ResponseType>(
+    key: StorageEnums
+  ): ResponseType | null {
     // works similar to the cache storage
 
     const cacheData = sessionStorage.getItem(key);
@@ -53,7 +65,7 @@ export class StorageService {
 
     const data: { value: any; expiryTime: number } = JSON.parse(cacheData);
 
-    if ((new Date()).getTime() > data.expiryTime) {
+    if (new Date().getTime() > data.expiryTime) {
       sessionStorage.removeItem(key);
       return null;
     } else {
@@ -62,6 +74,8 @@ export class StorageService {
   }
 
   public static removeFromSession(key: StorageEnums | StorageEnums[]): void {
-    Array.isArray(key) ? key.forEach((cache) => sessionStorage.removeItem(cache)) : sessionStorage.removeItem(key);
+    Array.isArray(key)
+      ? key.forEach((cache) => sessionStorage.removeItem(cache))
+      : sessionStorage.removeItem(key);
   }
 }
