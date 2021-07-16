@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { TextButton, TextInput } from '../../../../components';
 import { StyledFormWrapper } from '../../../../styles';
 import { UpdateWarehouseSchema, useWindowDimensions } from '../../../../utils';
-import { animateDrawer } from '../utils';
 
 const DrawerWrapper = styled(motion.div)<{
   width: number;
@@ -106,11 +105,11 @@ export const SettingsUpdateDrawer: React.FC<DrawerProps> = ({ closeDrawer }) => 
 
   return (
     <DrawerWrapper
-      variants={animateDrawer}
-      initial="initial"
-      exit="exit"
-      animate="animate"
-      transition={{ duration: 0.5 }}
+      // variants={animateDrawer}
+      // initial="initial"
+      // exit="exit"
+      // animate="animate"
+      // transition={{ duration: 0.5 }}
       width={width}
     >
       <div className="content">
