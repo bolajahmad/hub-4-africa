@@ -2,8 +2,14 @@ import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
 
 export function getWindowDimensions() {
-  const height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-  const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  const height =
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    document.body.clientHeight;
+  const width =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
   return {
     width,
     height,
@@ -11,9 +17,9 @@ export function getWindowDimensions() {
 }
 
 export function useWindowDimensions() {
-  const [windowDimensions, setWindowDimensions] = useState<ReturnType<typeof getWindowDimensions>>(
-    getWindowDimensions(),
-  );
+  const [windowDimensions, setWindowDimensions] = useState<
+    ReturnType<typeof getWindowDimensions>
+  >(getWindowDimensions());
 
   useEffect(() => {
     function handleResize() {

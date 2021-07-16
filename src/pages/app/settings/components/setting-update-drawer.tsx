@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { TextButton, TextInput } from '../../../../components';
 import { StyledFormWrapper } from '../../../../styles';
 import { UpdateWarehouseSchema, useWindowDimensions } from '../../../../utils';
-import { animateDrawer } from '../utils';
 
 const DrawerWrapper = styled(motion.div)<{
   width: number;
@@ -101,16 +100,18 @@ interface DrawerProps {
   title?: string;
 }
 
-export const SettingsUpdateDrawer: React.FC<DrawerProps> = ({ closeDrawer }) => {
+export const SettingsUpdateDrawer: React.FC<DrawerProps> = ({
+  closeDrawer,
+}) => {
   const { width } = useWindowDimensions();
 
   return (
     <DrawerWrapper
-      variants={animateDrawer}
-      initial="initial"
-      exit="exit"
-      animate="animate"
-      transition={{ duration: 0.5 }}
+      // variants={animateDrawer}
+      // initial="initial"
+      // exit="exit"
+      // animate="animate"
+      // transition={{ duration: 0.5 }}
       width={width}
     >
       <div className="content">
@@ -123,7 +124,11 @@ export const SettingsUpdateDrawer: React.FC<DrawerProps> = ({ closeDrawer }) => 
         </h2>
 
         <Formik
-          initialValues={{ warehouseName: '', warehouseCity: '', standardRate: '' }}
+          initialValues={{
+            warehouseName: '',
+            warehouseCity: '',
+            standardRate: '',
+          }}
           validateSchema={UpdateWarehouseSchema}
           onSubmit={console.log}
         >
@@ -131,14 +136,24 @@ export const SettingsUpdateDrawer: React.FC<DrawerProps> = ({ closeDrawer }) => 
             return (
               <StyledFormWrapper width={width} onSubmit={handleSubmit}>
                 <div className="main">
-                  <TextInput name="warehouseName" placeholder="WareHouse Name" />
-                  <TextInput name="warehouseCity" placeholder="WareHouse City" />
+                  <TextInput
+                    name="warehouseName"
+                    placeholder="WareHouse Name"
+                  />
+                  <TextInput
+                    name="warehouseCity"
+                    placeholder="WareHouse City"
+                  />
                   <TextInput name="standardRate" placeholder="Standard Rate" />
                 </div>
 
                 <div className="footer mt-4">
                   <div>
-                    <button type="submit" disabled={!isValid} className="submit__btn">
+                    <button
+                      type="submit"
+                      disabled={!isValid}
+                      className="submit__btn"
+                    >
                       Update
                     </button>
                   </div>

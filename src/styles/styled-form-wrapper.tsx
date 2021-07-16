@@ -33,7 +33,8 @@ export const StyledFormWrapper = styled.form<{ width: number }>`
       color: white;
       transform: translateY(0);
       filter: none;
-      transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1), filter 0.5s ease-in;
+      transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+        filter 0.5s ease-in;
       will-change: transform, filter;
 
       &:focus,

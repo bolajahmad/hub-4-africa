@@ -18,10 +18,16 @@ export const LoginPage: React.FC = () => {
     <AuthPageWrapper width={width}>
       <div className="container">
         <h1 className="bold-8">Welcome Back!</h1>
-        <h4 className="bold-6 mt-3">Continue managing your account. Login as an admin</h4>
+        <h4 className="bold-6 mt-3">
+          Continue managing your account. Login as an admin
+        </h4>
 
         <Formik
-          initialValues={{ email: '', password: '', fcmToken: 'hnndnnfcjdnvjvnkn' }}
+          initialValues={{
+            email: '',
+            password: '',
+            fcmToken: 'hnndnnfcjdnvjvnkn',
+          }}
           validationSchema={LoginSchema}
           onSubmit={(model) => logUserIn(model)}
         >
@@ -30,17 +36,40 @@ export const LoginPage: React.FC = () => {
             return (
               <StyledFormWrapper onSubmit={handleSubmit} width={width}>
                 <div className="main">
-                  <TextInput name="email" white placeholder="Email Address" type="email" />
-                  <TextInput name="password" white placeholder="Password" type="password" />
+                  <TextInput
+                    name="email"
+                    white
+                    placeholder="Email Address"
+                    type="email"
+                  />
+                  <TextInput
+                    name="password"
+                    white
+                    placeholder="Password"
+                    type="password"
+                  />
                 </div>
 
-                <span className="text-right" style={{ color: '#0EBE7E', fontWeight: 800, display: 'block' }}>
-                  <TextLinkButton to="/forgot-password">Forgot Password</TextLinkButton>
+                <span
+                  className="text-right"
+                  style={{
+                    color: '#0EBE7E',
+                    fontWeight: 800,
+                    display: 'block',
+                  }}
+                >
+                  <TextLinkButton to="/forgot-password">
+                    Forgot Password
+                  </TextLinkButton>
                 </span>
 
                 <div className="footer mt-4">
                   <div>
-                    <button type="submit" disabled={!isValid} className="submit__btn">
+                    <button
+                      type="submit"
+                      disabled={!isValid}
+                      className="submit__btn"
+                    >
                       {isLoading ? <LoaderComponent /> : 'Login'}
                     </button>
                   </div>

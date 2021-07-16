@@ -2,7 +2,7 @@ import { StorageService } from '../services';
 import { StorageEnums } from '../utils';
 
 /* eslint-disable no-unused-vars */
-export type QueryParams = Record<string, any>
+export type QueryParams = Record<string, any>;
 
 export interface ApiResponse<T = never> {
   success: boolean;
@@ -30,7 +30,7 @@ function logRequests<R, T>(
   endpoint: string,
   response: ApiResponse<R>,
   isError: boolean,
-  request?: T,
+  request?: T
 ) {
   const styles = `
         color: ${isError ? 'red' : 'green'};
@@ -40,7 +40,8 @@ function logRequests<R, T>(
     `;
   if (process.env.NODE_ENV !== 'production') {
     console.log(`%c Made [${method}] API call to [${endpoint}]:`, styles, {
-      request, response,
+      request,
+      response,
     });
   }
 }
@@ -69,7 +70,7 @@ export class ApiClient {
     }
     if (this.extractToken()) {
       headers.append('Authorization', this.getBearerToken());
-    };
+    }
 
     const corsOptions: Partial<RequestInit> = {
       mode: 'cors',
@@ -91,7 +92,10 @@ export class ApiClient {
   }
 
   public static unsetToken() {
-    StorageService.removeFromLocal([StorageEnums.AUTH_TOKEN, StorageEnums.TOKEN_DETAILS]);
+    StorageService.removeFromLocal([
+      StorageEnums.AUTH_TOKEN,
+      StorageEnums.TOKEN_DETAILS,
+    ]);
     this.abort();
   }
 
@@ -99,7 +103,7 @@ export class ApiClient {
     method: HttpMethods,
     endpoint: string,
     request?: ApiRequest<RequestType>,
-    isFormData?: boolean,
+    isFormData?: boolean
   ): Promise<ApiResponse<ResponseType>> {
     this.abortController = new AbortController();
     const base = process.env.REACT_APP_BASE_URL;
@@ -121,9 +125,9 @@ export class ApiClient {
         (request.body as any).finalize();
       }
 
-      requestContent.body = isFormData ?
-        ((request.body as unknown) as FormData) :
-        JSON.stringify(request.body);
+      requestContent.body = isFormData
+        ? (request.body as unknown as FormData)
+        : JSON.stringify(request.body);
     }
 
     try {
@@ -140,7 +144,13 @@ export class ApiClient {
       } catch (error) {
         throw new Error('Invalid response');
       }
-      logRequests<ResponseType, RequestType>(method, endpoint, responseContent, !response.ok, request?.body);
+      logRequests<ResponseType, RequestType>(
+        method,
+        endpoint,
+        responseContent,
+        !response.ok,
+        request?.body
+      );
 
       if (response.status >= 400 && response.status !== 401) {
         throw responseContent;
@@ -181,42 +191,49 @@ export class ApiClient {
   }
 
   public static get<T>(endpoint: string, query?: QueryParams) {
-    return this.requestType<T>(HttpMethods.Get, endpoint, query ? { query } : undefined);
+    return this.requestType<T>(
+      HttpMethods.Get,
+      endpoint,
+      query ? { query } : undefined
+    );
   }
 
   public static post<RequestType, ResponseType = any>(
     endpoint: string,
     body?: RequestType,
-    isFormData?: boolean,
+    isFormData?: boolean
   ) {
     return this.requestType<ResponseType>(
-      HttpMethods.Post, endpoint, { body }, isFormData,
+      HttpMethods.Post,
+      endpoint,
+      { body },
+      isFormData
     );
   }
 
   public static patch<RequestType, ResponseType = RequestType>(
     endpoint: string,
     body?: RequestType,
-    isFormData?: boolean,
+    isFormData?: boolean
   ) {
     return this.requestType<ResponseType, RequestType>(
       HttpMethods.Patch,
       endpoint,
       { body },
-      isFormData,
+      isFormData
     );
   }
 
   public static put<RequestType = any, ResponseType = RequestType>(
     endpoint: string,
     body: RequestType,
-    isFormData?: boolean,
+    isFormData?: boolean
   ) {
     return this.requestType<ResponseType, RequestType>(
       HttpMethods.Put,
       endpoint,
       { body },
-      isFormData,
+      isFormData
     );
   }
 

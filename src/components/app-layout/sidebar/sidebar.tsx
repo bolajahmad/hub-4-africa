@@ -176,7 +176,11 @@ export const Sidebar: React.FC<Props> = ({ isMobile }) => {
   }, [isMobile, x, position]);
 
   return (
-    <Wrapper width={width} className={compileClass(isMobile && 'mobile')} style={{ x, position }}>
+    <Wrapper
+      width={width}
+      className={compileClass(isMobile && 'mobile')}
+      style={{ x, position }}
+    >
       <div>
         <div className="logo">
           <Link to="/">
@@ -187,7 +191,10 @@ export const Sidebar: React.FC<Props> = ({ isMobile }) => {
           {links
             .filter((link) => !link.inactive)
             .map(({ name, path, icon: Icon, inactive }, i) => (
-              <motion.div key={i} whileHover={inactive ? undefined : { scale: 1.035 }}>
+              <motion.div
+                key={i}
+                whileHover={inactive ? undefined : { scale: 1.035 }}
+              >
                 <NavLink
                   className={compileClass('link', inactive && 'inactive')}
                   to={path}

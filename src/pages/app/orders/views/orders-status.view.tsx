@@ -23,7 +23,11 @@ export const OrderStatusView: React.FC = () => {
         <h2>Order Status</h2>
 
         <div className="table-wrapper">
-          <PrimaryTable collectionName="Pending Orders" columns={[]} data={[]} />
+          <PrimaryTable
+            collectionName="Pending Orders"
+            columns={[]}
+            data={[]}
+          />
         </div>
       </div>
     </PageWrapper>

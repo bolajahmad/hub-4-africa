@@ -38,7 +38,9 @@ export const AppLayout: React.FC<Props> = ({ children }) => {
       <main>
         <HeaderBar />
         <div className="page__body">
-          <Scrollbars style={{ height: '100%', width: '100%' }}>{children}</Scrollbars>
+          <Scrollbars style={{ height: '100%', width: '100%' }}>
+            {children}
+          </Scrollbars>
         </div>
       </main>
     </Wrapper>

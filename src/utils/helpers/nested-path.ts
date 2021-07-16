@@ -1,6 +1,11 @@
 const concat = (baseUrl: string, path: string) => {
   return (
-    '/' + baseUrl.split('/').concat(path.split('/')).filter((part) => part.length > 0).join('/')
+    '/' +
+    baseUrl
+      .split('/')
+      .concat(path.split('/'))
+      .filter((part) => part.length > 0)
+      .join('/')
   );
 };
 
