@@ -24,6 +24,6 @@ export const ResetPasswordSchema = Yup.object().shape({
     .matches(/[a-z]/, 'Password must contain a lowercase letter'),
   confirmPassword: Yup.string().oneOf(
     [Yup.ref('password'), null],
-    'Passwords must match'
+    'Passwords must match',
   ),
 });

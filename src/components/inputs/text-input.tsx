@@ -8,11 +8,7 @@ import { lowerCase, upperFirst } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { StyledInputWrapper } from '../../styles';
-import {
-  AnimateInputVariants,
-  compileClass,
-  useWindowDimensions,
-} from '../../utils';
+import { AnimateInputVariants, compileClass, useWindowDimensions } from '../../utils';
 
 interface Props extends React.ComponentPropsWithoutRef<'input'> {
   name: string;
@@ -48,10 +44,7 @@ export const TextInput: React.FC<Props> = ({
     setComputedType((type) => (type === 'password' ? 'text' : 'password'));
   }, [setComputedType]);
 
-  const passwordVisible = useMemo(
-    () => computedType === 'text',
-    [computedType]
-  );
+  const passwordVisible = useMemo(() => computedType === 'text', [computedType]);
 
   const showError = meta.error && meta.touched;
   const variant = useMemo(() => (showError ? 'error' : 'initial'), [showError]);
@@ -68,12 +61,7 @@ export const TextInput: React.FC<Props> = ({
       e.preventDefault();
     }
 
-    if (
-      type === 'number' &&
-      ['e', 'E', '+', '-'].includes(e.key) &&
-      e.key !== 'Backspace' &&
-      e.key !== 'Delete'
-    ) {
+    if (type === 'number' && ['e', 'E', '+', '-'].includes(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
       e.preventDefault();
     }
   };
@@ -104,11 +92,7 @@ export const TextInput: React.FC<Props> = ({
           {children}
         </Field>
         {type === 'password' && (
-          <button
-            type="button"
-            className="switch-button"
-            onClick={toggleVisibility}
-          >
+          <button type="button" className="switch-button" onClick={toggleVisibility}>
             {passwordVisible ? (
               <FiEyeOff size={15} className="switch-icon" />
             ) : (
@@ -118,9 +102,7 @@ export const TextInput: React.FC<Props> = ({
         )}
       </motion.div>
       {meta.error && meta.touched && !hideError && (
-        <span className="error-message">
-          {upperFirst(lowerCase(meta.error))}
-        </span>
+        <span className="error-message">{upperFirst(lowerCase(meta.error))}</span>
       )}
     </StyledInputWrapper>
   );

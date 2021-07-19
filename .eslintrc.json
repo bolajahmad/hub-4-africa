@@ -16,6 +16,7 @@
   "rules": {
     "react/react": "off",
     "react/prop-types": "off",
+    "react/display-name": "off",
     "require-jsdoc": 0,
     "linebreak-style": 0,
     "max-len": [1, 120],
