@@ -20,25 +20,25 @@ export const DashboardView: React.FC = () => {
 
   const { data: statsData, isLoading: loadingStats } = useQuery(
     ['order-stats'],
-    DashboardService.fetchOrderStats
+    DashboardService.fetchOrderStats,
   );
   const { data: ordersData, isLoading } = useQuery(
     ['orders'],
-    DashboardService.fetchAllOrders
+    DashboardService.fetchAllOrders,
   );
 
   const stats = useMemo(() => {
     if (statsData && statsData.payload) {
       const actualData = Object.keys(statsData.payload).map((key) => {
         const data = dashboardStats.find(
-          ({ id }) => id === key
+          ({ id }) => id === key,
         ) as OrderStatsModel;
 
         return {
           ...data,
-          value: statsData.payload
-            ? statsData.payload[key as OrderStatsType]
-            : 0,
+          value: statsData.payload ?
+            statsData.payload[key as OrderStatsType] :
+            0,
         };
       });
 
@@ -49,7 +49,7 @@ export const DashboardView: React.FC = () => {
   }, [statsData]);
   const orders = useMemo(
     () => (ordersData?.payload ?? []) as OrdersModel[],
-    [ordersData]
+    [ordersData],
   );
 
   return (
@@ -92,7 +92,7 @@ export const DashboardView: React.FC = () => {
                   </span>
                 ),
               },
-              { Header: "Receiver's Name", accessor: 'receiverName' },
+              { Header: 'Receiver\'s Name', accessor: 'receiverName' },
               {
                 Header: 'Progress Status',
                 accessor: () => 'Ready for delivery',

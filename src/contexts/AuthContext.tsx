@@ -24,15 +24,15 @@ export interface AuthContextInterface {
 }
 
 const Context = React.createContext<AuthContextInterface | undefined>(
-  undefined
+  undefined,
 );
 
 const AuthContext: React.FC<AuthContextProps> = ({ children }) => {
   const TOKEN = StorageService.getFromLocal<TokenDetailsModel>(
-    StorageEnums.TOKEN_DETAILS
+    StorageEnums.TOKEN_DETAILS,
   )!;
   const [isAuthenticated, setIsAuthenticated] = React.useState(
-    !!TOKEN && !!TOKEN.token
+    !!TOKEN && !!TOKEN.token,
   );
   const [account, setAccount] = React.useState<AuthenticatedUser | null>(null);
   const history = useHistory();
@@ -53,19 +53,19 @@ const AuthContext: React.FC<AuthContextProps> = ({ children }) => {
           StorageService.setToLocal(
             StorageEnums.REFRESH_TOKEN,
             payload.refreshToken,
-            2592000000
+            2592000000,
           );
           history.push('/app/dashboard');
         }
       },
-    }
+    },
   );
 
   const login = React.useCallback(
     (user: LoginModel) => {
       mutate(user);
     },
-    [mutate]
+    [mutate],
   );
 
   const logout = React.useCallback(() => {

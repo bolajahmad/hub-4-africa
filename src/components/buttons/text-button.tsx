@@ -67,5 +67,5 @@ const MotionLink: React.FC<
 };
 
 export const TextLinkButton = styled(TextButton).attrs(
-  (): StyledProps<any> => ({ as: MotionLink })
+  (): StyledProps<any> => ({ as: MotionLink }),
 )<LinkProps & ButtonProps>``;

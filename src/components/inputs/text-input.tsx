@@ -50,7 +50,7 @@ export const TextInput: React.FC<Props> = ({
 
   const passwordVisible = useMemo(
     () => computedType === 'text',
-    [computedType]
+    [computedType],
   );
 
   const showError = meta.error && meta.touched;

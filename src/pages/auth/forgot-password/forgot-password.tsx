@@ -17,10 +17,10 @@ export const ForgotPasswordPage: React.FC = () => {
     AuthService.verifyEmail,
     {
       onSuccess: () => setEmailVerified(true),
-    }
+    },
   );
   const { mutate: resetPassword, isLoading: isResetting } = useMutation(
-    AuthService.resetPassword
+    AuthService.resetPassword,
   );
 
   const {
