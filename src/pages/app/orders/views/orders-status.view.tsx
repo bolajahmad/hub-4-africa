@@ -39,7 +39,10 @@ export const OrderStatusView: React.FC = () => {
               collectionName="Shipment history"
               data={orders}
               columns={[
-                { Header: 'Tracking NO.', accessor: () => <span>#43521678947219736216</span> },
+                {
+                  Header: 'Tracking NO.',
+                  accessor: () => <span>#43521678947219736216</span>,
+                },
                 {
                   Header: 'Delivery Location',
                   accessor: ({ pickupLocalGovt, pickupState }: OrdersModel) => (
@@ -49,8 +52,14 @@ export const OrderStatusView: React.FC = () => {
                   ),
                 },
                 { Header: 'Receiver\'s Name', accessor: 'receiverName' },
-                { Header: 'Progress Status', accessor: () => 'Ready for delivery' },
-                { Header: 'Update Status', accessor: () => <span>In-Progress</span> },
+                {
+                  Header: 'Progress Status',
+                  accessor: () => 'Ready for delivery',
+                },
+                {
+                  Header: 'Update Status',
+                  accessor: () => <span>In-Progress</span>,
+                },
               ]}
             />
           ) : (

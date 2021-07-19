@@ -15,7 +15,7 @@ export class StorageService {
   public static saveToSession(
     key: StorageEnums,
     value: any,
-    expiry = 10800000,
+    expiry = 10800000
   ) {
     const now = new Date();
 
@@ -28,7 +28,7 @@ export class StorageService {
   }
 
   public static getFromLocal<ResponseType>(
-    key: StorageEnums,
+    key: StorageEnums
   ): ResponseType | null {
     const cacheData = localStorage.getItem(key);
 
@@ -47,13 +47,13 @@ export class StorageService {
   }
 
   public static removeFromLocal(key: StorageEnums | StorageEnums[]): void {
-    Array.isArray(key) ?
-      key.forEach((cache) => localStorage.removeItem(cache)) :
-      localStorage.removeItem(key);
+    Array.isArray(key)
+      ? key.forEach((cache) => localStorage.removeItem(cache))
+      : localStorage.removeItem(key);
   }
 
   public static getFromSession<ResponseType>(
-    key: StorageEnums,
+    key: StorageEnums
   ): ResponseType | null {
     // works similar to the cache storage
 
@@ -74,8 +74,8 @@ export class StorageService {
   }
 
   public static removeFromSession(key: StorageEnums | StorageEnums[]): void {
-    Array.isArray(key) ?
-      key.forEach((cache) => sessionStorage.removeItem(cache)) :
-      sessionStorage.removeItem(key);
+    Array.isArray(key)
+      ? key.forEach((cache) => sessionStorage.removeItem(cache))
+      : sessionStorage.removeItem(key);
   }
 }

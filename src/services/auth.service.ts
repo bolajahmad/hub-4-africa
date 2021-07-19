@@ -9,14 +9,14 @@ export class AuthService {
   public static verifyEmail(model: { email: string }) {
     return ApiClient.post<{ email: string }, never>(
       'auth/forgot-password',
-      model,
+      model
     );
   }
 
   public static resetPassword(model: ResetPasswordModel) {
     return ApiClient.put<ResetPasswordModel, never>(
       'auth/reset-password',
-      model,
+      model
     );
   }
 

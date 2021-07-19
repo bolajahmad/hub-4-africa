@@ -81,7 +81,13 @@ export interface DashboardStatsProps extends OrderStatsModel {
   isLoading?: boolean;
 }
 
-export const StatsBox: React.FC<DashboardStatsProps> = ({ name, value, color, icon, isLoading }) => {
+export const StatsBox: React.FC<DashboardStatsProps> = ({
+  name,
+  value,
+  color,
+  icon,
+  isLoading,
+}) => {
   return (
     <Wrapper>
       <IconStyle color={color}>
