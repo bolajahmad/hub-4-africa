@@ -3,9 +3,10 @@ import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { PrimaryTable } from '../../../../components';
-import { LoaderComponent } from '../../../../components/utils';
+import { CustomDropdown, CustomDropdownItem, LoaderComponent } from '../../../../components/utils';
 import { OrdersModel } from '../../../../models';
 import { OrdersService } from '../../../../services';
+import { StyledProgressWrapper } from '../../../../styles';
 
 const PageWrapper = styled(motion.div)`
   width: 100%;
@@ -34,14 +35,14 @@ export const OrderStatusView: React.FC = () => {
             <div className="centered">
               <LoaderComponent />
             </div>
-          ) : orders.length ? (
+          ) : (
             <PrimaryTable
-              collectionName="Shipment history"
+              collectionName="Orders"
               data={orders}
               columns={[
                 {
                   Header: 'Tracking NO.',
-                  accessor: () => <span>#43521678947219736216</span>,
+                  accessor: ({ id }: OrdersModel) => <span>#{id}</span>,
                 },
                 {
                   Header: 'Delivery Location',
@@ -54,16 +55,23 @@ export const OrderStatusView: React.FC = () => {
                 { Header: 'Receiver\'s Name', accessor: 'receiverName' },
                 {
                   Header: 'Progress Status',
-                  accessor: () => 'Ready for delivery',
+                  accessor: () => (
+                    <StyledProgressWrapper>
+                      <div className="circle"></div>
+                      Ready for Delivery
+                    </StyledProgressWrapper>
+                  ),
                 },
                 {
                   Header: 'Update Status',
-                  accessor: () => <span>In-Progress</span>,
+                  accessor: () => (
+                    <CustomDropdown triggerComponent={() => <span>In-Progress</span>}>
+                      <CustomDropdownItem>Ready</CustomDropdownItem>
+                    </CustomDropdown>
+                  ),
                 },
               ]}
             />
-          ) : (
-            <div className="centered info-box">You have no Orders</div>
           )}
         </div>
       </div>

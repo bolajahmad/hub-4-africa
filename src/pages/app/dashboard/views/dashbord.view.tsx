@@ -2,14 +2,10 @@ import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { PrimaryTable } from '../../../../components';
-import { LoaderComponent } from '../../../../components/utils';
-import {
-  OrdersModel,
-  OrderStatsModel,
-  OrderStatsType,
-} from '../../../../models';
+import { CustomDropdown, CustomDropdownItem, LoaderComponent } from '../../../../components/utils';
+import { OrdersModel, OrderStatsModel, OrderStatsType } from '../../../../models';
 import { DashboardService } from '../../../../services/dashboard.service';
-import { StyledDashboard } from '../../../../styles';
+import { StyledDashboard, StyledProgressWrapper } from '../../../../styles';
 import { useWindowDimensions } from '../../../../utils';
 import { dashboardStats, StatsBox } from '../components/stats-box';
 
@@ -18,27 +14,17 @@ const Wrapper = styled(StyledDashboard)``;
 export const DashboardView: React.FC = () => {
   const { width } = useWindowDimensions();
 
-  const { data: statsData, isLoading: loadingStats } = useQuery(
-    ['order-stats'],
-    DashboardService.fetchOrderStats,
-  );
-  const { data: ordersData, isLoading } = useQuery(
-    ['orders'],
-    DashboardService.fetchAllOrders,
-  );
+  const { data: statsData, isLoading: loadingStats } = useQuery(['order-stats'], DashboardService.fetchOrderStats);
+  const { data: ordersData, isLoading } = useQuery(['orders'], DashboardService.fetchAllOrders);
 
   const stats = useMemo(() => {
     if (statsData && statsData.payload) {
       const actualData = Object.keys(statsData.payload).map((key) => {
-        const data = dashboardStats.find(
-          ({ id }) => id === key,
-        ) as OrderStatsModel;
+        const data = dashboardStats.find(({ id }) => id === key) as OrderStatsModel;
 
         return {
           ...data,
-          value: statsData.payload ?
-            statsData.payload[key as OrderStatsType] :
-            0,
+          value: statsData.payload ? statsData.payload[key as OrderStatsType] : 0,
         };
       });
 
@@ -47,24 +33,13 @@ export const DashboardView: React.FC = () => {
       return dashboardStats;
     }
   }, [statsData]);
-  const orders = useMemo(
-    () => (ordersData?.payload ?? []) as OrdersModel[],
-    [ordersData],
-  );
+  const orders = useMemo(() => (ordersData?.payload ?? []) as OrdersModel[], [ordersData]);
 
   return (
     <Wrapper width={width}>
       <div className="stats-box">
         {stats.map(({ name, value, color, icon, id }) => (
-          <StatsBox
-            key={id}
-            name={name}
-            icon={icon}
-            id={id}
-            isLoading={loadingStats}
-            value={value}
-            color={color}
-          />
+          <StatsBox key={id} name={name} icon={icon} id={id} isLoading={loadingStats} value={value} color={color} />
         ))}
       </div>
 
@@ -82,7 +57,7 @@ export const DashboardView: React.FC = () => {
             columns={[
               {
                 Header: 'Tracking NO.',
-                accessor: () => <span>#43521678947219736216</span>,
+                accessor: ({ id }: OrdersModel) => <span>#{id}</span>,
               },
               {
                 Header: 'Delivery Location',
@@ -95,11 +70,20 @@ export const DashboardView: React.FC = () => {
               { Header: 'Receiver\'s Name', accessor: 'receiverName' },
               {
                 Header: 'Progress Status',
-                accessor: () => 'Ready for delivery',
+                accessor: () => (
+                  <StyledProgressWrapper>
+                    <div className="circle"></div>
+                    Ready for Delivery
+                  </StyledProgressWrapper>
+                ),
               },
               {
                 Header: 'Update Status',
-                accessor: () => <span>In-Progress</span>,
+                accessor: () => (
+                  <CustomDropdown triggerComponent={() => <span>In-Progress</span>}>
+                    <CustomDropdownItem>Ready</CustomDropdownItem>
+                  </CustomDropdown>
+                ),
               },
             ]}
           />

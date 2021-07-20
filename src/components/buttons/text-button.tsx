@@ -31,12 +31,10 @@ export const TextButton = styled(motion.button).attrs(() => {
   background: none;
   border: none;
   font-weight: 600;
-  padding: ${({ size = 'normal' }) =>
-    size === 'small' ? '0' : size === 'normal' ? '0.5em 1em' : '0.5em 1em'};
+  padding: ${({ size = 'normal' }) => (size === 'small' ? '0' : size === 'normal' ? '0.5em 1em' : '0.5em 1em')};
   border-radius: 0.5em;
   opacity: 1;
-  transition: filter 0.3s ease-out, opacity 0.3s ease-out,
-    background-color 0.4s ease-in;
+  transition: filter 0.3s ease-out, opacity 0.3s ease-out, background-color 0.4s ease-in;
   will-change: filter, opacity, background-color;
 
   &:focus,
@@ -56,9 +54,10 @@ export const TextButton = styled(motion.button).attrs(() => {
   }
 `;
 
-const MotionLink: React.FC<
-  LinkProps & ButtonProps & { whileHover: MotionProps['whileHover'] }
-> = ({ whileHover, ...props }) => {
+const MotionLink: React.FC<LinkProps & ButtonProps & { whileHover: MotionProps['whileHover'] }> = ({
+  whileHover,
+  ...props
+}) => {
   return (
     <motion.div whileHover={whileHover}>
       <Link {...props} />
@@ -66,6 +65,6 @@ const MotionLink: React.FC<
   );
 };
 
-export const TextLinkButton = styled(TextButton).attrs(
-  (): StyledProps<any> => ({ as: MotionLink }),
-)<LinkProps & ButtonProps>``;
+export const TextLinkButton = styled(TextButton).attrs((): StyledProps<any> => ({ as: MotionLink }))<
+  LinkProps & ButtonProps
+>``;

@@ -9,4 +9,8 @@ export class OrdersService {
   public static fetchOrderStatus() {
     return ApiClient.get<OrdersModel[]>('admin/order-statuses');
   }
+
+  public static trackOrder(id: string) {
+    return ApiClient.get<OrdersModel>(`order/:${id}`);
+  }
 }

@@ -97,12 +97,8 @@ const PageWrapper = styled(motion.div)`
 `;
 
 export const PendingOrdersView: React.FC = () => {
-  const { data, isLoading, refetch } = useQuery(
-    ['pending-orders'],
-    OrdersService.fetchPendingOrders,
-  );
+  const { data, isLoading, refetch } = useQuery(['pending-orders'], OrdersService.fetchPendingOrders);
   const pendingOrders = useMemo(() => data?.payload || [], [data]);
-  console.log({ pendingOrders });
 
   return (
     <PageWrapper>
