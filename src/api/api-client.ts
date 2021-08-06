@@ -94,7 +94,7 @@ export class ApiClient {
   public static unsetToken() {
     StorageService.removeFromLocal([
       StorageEnums.AUTH_TOKEN,
-      StorageEnums.TOKEN_DETAILS,
+      StorageEnums.HUB_CURRENT_ADMIN,
     ]);
     this.abort();
   }

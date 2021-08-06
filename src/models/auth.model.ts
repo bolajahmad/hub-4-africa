@@ -1,7 +1,6 @@
 export interface LoginModel {
   email: string;
   password: string;
-  fcmToken?: string;
 }
 
 export interface ResetPasswordModel {

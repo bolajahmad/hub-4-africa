@@ -1,5 +1,6 @@
 import React from 'react';
 import CountUp from 'react-countup';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import ArrowDownSquare from '../../../../assets/images/arrow-down-square.svg';
 import ArrowUpSquare from '../../../../assets/images/arrow-up-square.svg';
@@ -13,6 +14,7 @@ export const dashboardStats: OrderStatsModel[] = [
     name: 'Pending Orders',
     id: 'pending',
     value: 0,
+    link: '/app/orders/all',
     color: 'rgba(255, 208, 57, 0.1)',
     icon: ArrowDownSquare,
   },
@@ -46,6 +48,10 @@ const Wrapper = styled.div`
   gap: 20px;
   flex-wrap: nowrap;
   padding: 0em 1em;
+
+  &:hover {
+    cursor: pointer;
+  }
 
   .content {
     display: flex;
@@ -81,15 +87,11 @@ export interface DashboardStatsProps extends OrderStatsModel {
   isLoading?: boolean;
 }
 
-export const StatsBox: React.FC<DashboardStatsProps> = ({
-  name,
-  value,
-  color,
-  icon,
-  isLoading,
-}) => {
+export const StatsBox: React.FC<DashboardStatsProps> = ({ name, value, color, icon, isLoading, link }) => {
+  const history = useHistory();
+
   return (
-    <Wrapper>
+    <Wrapper onClick={() => link && history.push(link)}>
       <IconStyle color={color}>
         <img src={icon} alt="" />
       </IconStyle>

@@ -26,9 +26,10 @@ export interface AuthContextInterface {
 const Context = React.createContext<AuthContextInterface | undefined>(undefined);
 
 const AuthContext: React.FC<AuthContextProps> = ({ children }) => {
-  const TOKEN = StorageService.getFromLocal<TokenDetailsModel>(StorageEnums.TOKEN_DETAILS)!;
+  const TOKEN = StorageService.getFromLocal<TokenDetailsModel>(StorageEnums.HUB_CURRENT_ADMIN)!;
+  const userAccount = StorageService.getFromLocal<AuthenticatedUser>(StorageEnums.HUB_CURRENT_ADMIN);
   const [isAuthenticated, setIsAuthenticated] = React.useState(!!TOKEN && !!TOKEN.token);
-  const [account, setAccount] = React.useState<AuthenticatedUser | null>(null);
+  const [account, setAccount] = React.useState<AuthenticatedUser | null>(userAccount);
   const history = useHistory();
 
   const { mutate, isLoading, isError, isSuccess, error } = useMutation(AuthService.login, {
@@ -36,12 +37,7 @@ const AuthContext: React.FC<AuthContextProps> = ({ children }) => {
       if (payload) {
         setAccount(payload);
         StorageService.setToLocal(StorageEnums.AUTH_TOKEN, payload.token);
-        StorageService.setToLocal(StorageEnums.TOKEN_DETAILS, {
-          token: payload.token,
-          refreshToken: payload.refreshToken,
-          tokenExpiryTime: payload.tokenExpiryTime,
-          updatedAt: payload.updatedAt,
-        } as TokenDetailsModel);
+        StorageService.setToLocal(StorageEnums.HUB_CURRENT_ADMIN, payload);
         StorageService.setToLocal(StorageEnums.REFRESH_TOKEN, payload.refreshToken, 2592000000);
         history.push('/app/dashboard');
       }
@@ -56,7 +52,7 @@ const AuthContext: React.FC<AuthContextProps> = ({ children }) => {
   );
 
   const logout = React.useCallback(() => {
-    StorageService.removeFromLocal(StorageEnums.TOKEN_DETAILS);
+    StorageService.removeFromLocal([StorageEnums.HUB_CURRENT_ADMIN, StorageEnums.AUTH_TOKEN]);
     setAccount(null);
     setIsAuthenticated(false);
     history.push('/login');

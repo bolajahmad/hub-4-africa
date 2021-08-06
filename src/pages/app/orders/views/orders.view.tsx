@@ -33,11 +33,7 @@ const PageWrapper = styled(StyledDashboard)`
       align-items: center;
       justify-content: center;
       padding: 0.5em;
-      background-image: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.2) 34.67%,
-        rgba(249, 249, 249, 0.2) 65.33%
-      );
+      background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 34.67%, rgba(249, 249, 249, 0.2) 65.33%);
       border-radius: 50%;
     }
 
@@ -89,15 +85,15 @@ const PageWrapper = styled(StyledDashboard)`
     }
 
     > .icon {
-      width: 5em;
+      width: 7em;
     }
 
     > h4 {
-      font-size: 0.8em;
+      font-size: 0.9em;
     }
 
     > p {
-      font-size: 0.67em;
+      font-size: 0.75em;
     }
   }
 `;
@@ -144,9 +140,7 @@ export const OrdersView: React.FC = () => {
 
         <div className="card-content">
           <div className="header">Process Faster</div>
-          <h3 className="text">
-            Increase better experience when you process orders faster.
-          </h3>
+          <h3 className="text">Increase better experience when you process orders faster.</h3>
         </div>
       </div>
 

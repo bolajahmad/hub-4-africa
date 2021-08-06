@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { PrimaryTable } from '../../../../components';
 import { CustomDropdown, CustomDropdownItem, LoaderComponent } from '../../../../components/utils';
 import { OrdersModel, OrderStatsModel, OrderStatsType } from '../../../../models';
+import { UtilService } from '../../../../services';
 import { DashboardService } from '../../../../services/dashboard.service';
 import { StyledDashboard, StyledProgressWrapper } from '../../../../styles';
 import { useWindowDimensions } from '../../../../utils';
@@ -15,6 +16,7 @@ export const DashboardView: React.FC = () => {
   const { width } = useWindowDimensions();
 
   const { data: statsData, isLoading: loadingStats } = useQuery(['order-stats'], DashboardService.fetchOrderStats);
+  const { data: statusData } = useQuery(['order-status'], UtilService.fetchOrderStatus);
   const { data: ordersData, isLoading } = useQuery(['orders'], DashboardService.fetchAllOrders);
 
   const stats = useMemo(() => {
@@ -34,12 +36,13 @@ export const DashboardView: React.FC = () => {
     }
   }, [statsData]);
   const orders = useMemo(() => (ordersData?.payload ?? []) as OrdersModel[], [ordersData]);
+  const status = useMemo(() => (statusData?.payload ?? []) as { id: string; name: string }[], [statusData]);
 
   return (
     <Wrapper width={width}>
       <div className="stats-box">
-        {stats.map(({ name, value, color, icon, id }) => (
-          <StatsBox key={id} name={name} icon={icon} id={id} isLoading={loadingStats} value={value} color={color} />
+        {stats.map((props) => (
+          <StatsBox key={props.id} {...props} isLoading={loadingStats} />
         ))}
       </div>
 
@@ -81,7 +84,9 @@ export const DashboardView: React.FC = () => {
                 Header: 'Update Status',
                 accessor: () => (
                   <CustomDropdown triggerComponent={() => <span>In-Progress</span>}>
-                    <CustomDropdownItem>Ready</CustomDropdownItem>
+                    {status.map(({ name, id }) => (
+                      <CustomDropdownItem key={id}>{name.toLowerCase().replace('_', ' ')}</CustomDropdownItem>
+                    ))}
                   </CustomDropdown>
                 ),
               },

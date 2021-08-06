@@ -1,8 +1,25 @@
+import { WarehouseModel } from '.';
+
 export type ShipmentProgressType =
   | 'INPROGRESS'
   | 'RECEIVED'
   | 'READY'
   | 'DELIVERED';
+
+export interface BaseOrderModel {
+  createdAt: string;
+  id: string;
+  pricePerKG: number;
+  updatedAt: string;
+}
+
+export interface PackageConditions extends BaseOrderModel {
+  packageConditionName: string;
+}
+
+export interface MeansofTransportation extends BaseOrderModel {
+  meansOfTransportation: string;
+}
 
 export interface OrdersModel {
   id: string;
@@ -20,4 +37,7 @@ export interface OrdersModel {
   paymentStatus: number;
   createdAt: string;
   updatedAt: string;
+  meansOfTransportations: MeansofTransportation[];
+  packageConditions: PackageConditions[];
+  warehouses: WarehouseModel[]
 }

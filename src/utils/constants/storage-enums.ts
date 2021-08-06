@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 export enum StorageEnums {
   AUTH_TOKEN = 'AUTH_TOKEN',
-  TOKEN_DETAILS = 'TOKEN_DETAILS',
+  HUB_CURRENT_ADMIN = 'HUB_CURRENT_ADMIN',
   REFRESH_TOKEN = 'REFRESH_TOKEN',
 }
