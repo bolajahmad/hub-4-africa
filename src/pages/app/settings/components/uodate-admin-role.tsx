@@ -7,16 +7,31 @@ import { SelectInput, TextButton, TextInput } from '../../../../components';
 import { LoaderComponent } from '../../../../components/utils';
 import { DashboardService, UtilService } from '../../../../services';
 import { StyledFormWrapper } from '../../../../styles';
-import { generateID, UpdateAdminSchema, useWindowDimensions } from '../../../../utils';
+import {
+  generateID,
+  UpdateAdminSchema,
+  useWindowDimensions,
+} from '../../../../utils';
 
 export const AdminRoleDrawer: React.FC<{
   closeDrawer: () => void;
 }> = ({ closeDrawer }) => {
   const { width } = useWindowDimensions();
-  const { mutate: createAdmin, isLoading: isSubmitting } = useMutation(DashboardService.createAdmin);
-  const { data: packageData, isLoading } = useQuery(['package-conditions'], UtilService.fetchConditions);
-  const { data: warehouseData } = useQuery(['warehouses'], UtilService.fetchWarehouse);
-  const warehouses = useMemo(() => warehouseData?.payload || [], [warehouseData]);
+  const { mutate: createAdmin, isLoading: isSubmitting } = useMutation(
+    DashboardService.createAdmin
+  );
+  const { data: packageData, isLoading } = useQuery(
+    ['package-conditions'],
+    UtilService.fetchConditions
+  );
+  const { data: warehouseData } = useQuery(
+    ['warehouses'],
+    UtilService.fetchWarehouse
+  );
+  const warehouses = useMemo(
+    () => warehouseData?.payload || [],
+    [warehouseData]
+  );
   const conditions = useMemo(() => packageData?.payload || [], [packageData]);
 
   return (
@@ -59,7 +74,11 @@ export const AdminRoleDrawer: React.FC<{
 
               <div className="footer mt-4">
                 <div>
-                  <button type="submit" disabled={!isValid} className="submit__btn">
+                  <button
+                    type="submit"
+                    disabled={!isValid}
+                    className="submit__btn"
+                  >
                     {isSubmitting ? <LoaderComponent /> : 'Update'}
                   </button>
                 </div>

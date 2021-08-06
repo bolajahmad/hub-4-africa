@@ -25,7 +25,9 @@ export const ToastNotificationArea: React.FC = () => {
     <Container>
       <AnimatePresence>
         {notifications &&
-          notifications.map((notification) => <ToastNotification key={notification.id} {...notification} />)}
+          notifications.map((notification) => (
+            <ToastNotification key={notification.id} {...notification} />
+          ))}
       </AnimatePresence>
     </Container>
   );

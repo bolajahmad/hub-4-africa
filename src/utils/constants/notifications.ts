@@ -8,13 +8,22 @@ export enum NotificationType {
   SUCCESS,
 }
 
-export type NotificationContent = string | string[] | Record<string, string> | Record<string, string[]> | undefined;
+export type NotificationContent =
+  | string
+  | string[]
+  | Record<string, string>
+  | Record<string, string[]>
+  | undefined;
 
 export class Notification {
   public id!: number;
   public message: string[];
 
-  constructor(public type: NotificationType, message: NotificationContent, public sticky?: boolean) {
+  constructor(
+    public type: NotificationType,
+    message: NotificationContent,
+    public sticky?: boolean
+  ) {
     if (!message) {
       this.message = [];
       return;

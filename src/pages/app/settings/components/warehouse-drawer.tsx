@@ -14,14 +14,24 @@ export const WarehouseDrawer: React.FC<{
 }> = ({ closeDrawer }) => {
   const { width } = useWindowDimensions();
   const { mutate: addWarehouse } = useMutation(UtilService.createWarehouse);
-  const { data: warehouseData, isLoading: isFetching } = useQuery(['warehouses'], UtilService.fetchWarehouse);
-  const { data: countriesData } = useQuery(['countries'], UtilService.fetchCountries);
+  const { data: warehouseData, isLoading: isFetching } = useQuery(
+    ['warehouses'],
+    UtilService.fetchWarehouse
+  );
+  const { data: countriesData } = useQuery(
+    ['countries'],
+    UtilService.fetchCountries
+  );
 
   const countries = useMemo(
-    () => (countriesData?.payload || []) as { countryName: string; id: string }[],
-    [countriesData],
+    () =>
+      (countriesData?.payload || []) as { countryName: string; id: string }[],
+    [countriesData]
   );
-  const warehouses = useMemo(() => warehouseData?.payload || [], [warehouseData]);
+  const warehouses = useMemo(
+    () => warehouseData?.payload || [],
+    [warehouseData]
+  );
 
   return (
     <div className="content">
@@ -63,7 +73,11 @@ export const WarehouseDrawer: React.FC<{
 
               <div className="footer mt-4">
                 <div>
-                  <button type="submit" disabled={!isValid} className="submit__btn">
+                  <button
+                    type="submit"
+                    disabled={!isValid}
+                    className="submit__btn"
+                  >
                     Update
                   </button>
                 </div>

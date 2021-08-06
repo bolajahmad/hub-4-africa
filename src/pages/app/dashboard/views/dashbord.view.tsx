@@ -2,8 +2,16 @@ import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { PrimaryTable } from '../../../../components';
-import { CustomDropdown, CustomDropdownItem, LoaderComponent } from '../../../../components/utils';
-import { OrdersModel, OrderStatsModel, OrderStatsType } from '../../../../models';
+import {
+  CustomDropdown,
+  CustomDropdownItem,
+  LoaderComponent,
+} from '../../../../components/utils';
+import {
+  OrdersModel,
+  OrderStatsModel,
+  OrderStatsType,
+} from '../../../../models';
 import { UtilService } from '../../../../services';
 import { DashboardService } from '../../../../services/dashboard.service';
 import { StyledDashboard, StyledProgressWrapper } from '../../../../styles';
@@ -15,18 +23,31 @@ const Wrapper = styled(StyledDashboard)``;
 export const DashboardView: React.FC = () => {
   const { width } = useWindowDimensions();
 
-  const { data: statsData, isLoading: loadingStats } = useQuery(['order-stats'], DashboardService.fetchOrderStats);
-  const { data: statusData } = useQuery(['order-status'], UtilService.fetchOrderStatus);
-  const { data: ordersData, isLoading } = useQuery(['orders'], DashboardService.fetchAllOrders);
+  const { data: statsData, isLoading: loadingStats } = useQuery(
+    ['order-stats'],
+    DashboardService.fetchOrderStats
+  );
+  const { data: statusData } = useQuery(
+    ['order-status'],
+    UtilService.fetchOrderStatus
+  );
+  const { data: ordersData, isLoading } = useQuery(
+    ['orders'],
+    DashboardService.fetchAllOrders
+  );
 
   const stats = useMemo(() => {
     if (statsData && statsData.payload) {
       const actualData = Object.keys(statsData.payload).map((key) => {
-        const data = dashboardStats.find(({ id }) => id === key) as OrderStatsModel;
+        const data = dashboardStats.find(
+          ({ id }) => id === key
+        ) as OrderStatsModel;
 
         return {
           ...data,
-          value: statsData.payload ? statsData.payload[key as OrderStatsType] : 0,
+          value: statsData.payload
+            ? statsData.payload[key as OrderStatsType]
+            : 0,
         };
       });
 
@@ -35,8 +56,14 @@ export const DashboardView: React.FC = () => {
       return dashboardStats;
     }
   }, [statsData]);
-  const orders = useMemo(() => (ordersData?.payload ?? []) as OrdersModel[], [ordersData]);
-  const status = useMemo(() => (statusData?.payload ?? []) as { id: string; name: string }[], [statusData]);
+  const orders = useMemo(
+    () => (ordersData?.payload ?? []) as OrdersModel[],
+    [ordersData]
+  );
+  const status = useMemo(
+    () => (statusData?.payload ?? []) as { id: string; name: string }[],
+    [statusData]
+  );
 
   return (
     <Wrapper width={width}>
@@ -70,7 +97,7 @@ export const DashboardView: React.FC = () => {
                   </span>
                 ),
               },
-              { Header: 'Receiver\'s Name', accessor: 'receiverName' },
+              { Header: "Receiver's Name", accessor: 'receiverName' },
               {
                 Header: 'Progress Status',
                 accessor: () => (
@@ -83,9 +110,13 @@ export const DashboardView: React.FC = () => {
               {
                 Header: 'Update Status',
                 accessor: () => (
-                  <CustomDropdown triggerComponent={() => <span>In-Progress</span>}>
+                  <CustomDropdown
+                    triggerComponent={() => <span>In-Progress</span>}
+                  >
                     {status.map(({ name, id }) => (
-                      <CustomDropdownItem key={id}>{name.toLowerCase().replace('_', ' ')}</CustomDropdownItem>
+                      <CustomDropdownItem key={id}>
+                        {name.toLowerCase().replace('_', ' ')}
+                      </CustomDropdownItem>
                     ))}
                   </CustomDropdown>
                 ),

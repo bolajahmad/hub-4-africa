@@ -17,4 +17,4 @@ export interface CreateWarehouse {
   warehouseCity: string;
   countryId: string;
   pricePerKg: string;
-};
+}

@@ -96,9 +96,13 @@ const PageWrapper = styled(motion.div)`
 export const TrackOrdersView: React.FC = () => {
   const { width } = useWindowDimensions();
   const { addNotification } = useNotificationContext()!;
-  const { mutate, isError, isLoading, error, data } = useMutation(OrdersService.trackOrder, {
-    onSuccess: ({ message }) => addNotification(NotificationType.SUCCESS, message, true),
-  });
+  const { mutate, isError, isLoading, error, data } = useMutation(
+    OrdersService.trackOrder,
+    {
+      onSuccess: ({ message }) =>
+        addNotification(NotificationType.SUCCESS, message, true),
+    }
+  );
   const { values, handleChange, handleBlur } = useFormik({
     initialValues: { orderId: '' },
     onSubmit: (model) => {
@@ -153,8 +157,18 @@ export const TrackOrdersView: React.FC = () => {
 
           <StyledFormWrapper width={width}>
             <div className="footer">
-              <div style={{ maxWidth: '12em', marginLeft: 'auto', marginRight: 'auto' }}>
-                <button type="button" onClick={() => handleSubmit()} className="submit__btn">
+              <div
+                style={{
+                  maxWidth: '12em',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => handleSubmit()}
+                  className="submit__btn"
+                >
                   {isLoading ? <LoaderComponent /> : 'Track'}
                 </button>
               </div>

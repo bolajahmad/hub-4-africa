@@ -15,6 +15,9 @@ export class OrdersService {
   }
 
   public static orderEstimate(model: RequestPriceEstimateModel) {
-    return ApiClient.post<RequestPriceEstimateModel, { estimatedPrice: number }>('order/estimate', model);
+    return ApiClient.post<
+      RequestPriceEstimateModel,
+      { estimatedPrice: number }
+    >('order/estimate', model);
   }
 }

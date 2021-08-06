@@ -90,7 +90,11 @@ export const CustomDropdown: React.FC<Props> = ({
     <Wrapper onClick={toggle} className={className} ref={ref}>
       <div className="dropdown-btn">
         {<TriggerComponent />}
-        {withCaret && <span className="icon">{!isOpen ? <RiArrowDownSLine /> : <RiArrowUpSLine />}</span>}
+        {withCaret && (
+          <span className="icon">
+            {!isOpen ? <RiArrowDownSLine /> : <RiArrowUpSLine />}
+          </span>
+        )}
       </div>
       <CustomDropdownMenu>{isOpen && children}</CustomDropdownMenu>
     </Wrapper>

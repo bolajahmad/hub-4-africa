@@ -105,7 +105,10 @@ interface DrawerProps {
   title?: string;
 }
 
-export const SettingsUpdateDrawer: React.FC<DrawerProps> = ({ closeDrawer, isUpdating }) => {
+export const SettingsUpdateDrawer: React.FC<DrawerProps> = ({
+  closeDrawer,
+  isUpdating,
+}) => {
   const { width } = useWindowDimensions();
 
   return (
@@ -117,8 +120,12 @@ export const SettingsUpdateDrawer: React.FC<DrawerProps> = ({ closeDrawer, isUpd
       // transition={{ duration: 0.5 }}
       width={width}
     >
-      {isUpdating === 'warehouse' && <WarehouseDrawer closeDrawer={closeDrawer} />}
-      {isUpdating === 'package-condition' && <PackageConditionsDrawer closeDrawer={closeDrawer} />}
+      {isUpdating === 'warehouse' && (
+        <WarehouseDrawer closeDrawer={closeDrawer} />
+      )}
+      {isUpdating === 'package-condition' && (
+        <PackageConditionsDrawer closeDrawer={closeDrawer} />
+      )}
       {isUpdating === 'role' && <AdminRoleDrawer closeDrawer={closeDrawer} />}
     </DrawerWrapper>
   );

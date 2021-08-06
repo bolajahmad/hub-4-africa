@@ -39,5 +39,5 @@ export interface OrdersModel {
   updatedAt: string;
   meansOfTransportations: MeansofTransportation[];
   packageConditions: PackageConditions[];
-  warehouses: WarehouseModel[]
+  warehouses: WarehouseModel[];
 }

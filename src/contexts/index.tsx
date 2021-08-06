@@ -6,7 +6,9 @@ export interface ApplicationContextProps {
   children: React.ReactNode;
 }
 
-const ApplicationContext: React.FC<ApplicationContextProps> = ({ children }) => {
+const ApplicationContext: React.FC<ApplicationContextProps> = ({
+  children,
+}) => {
   return (
     <AuthContext>
       <NotificationContext>{children}</NotificationContext>
