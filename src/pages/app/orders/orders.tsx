@@ -1,6 +1,6 @@
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router';
+import { Route, Switch } from 'react-router';
 import { AppLayout, Page } from '../../../components';
 import { NestedPath, useWindowDimensions } from '../../../utils';
 import {
@@ -21,20 +21,28 @@ export const OrdersPage: React.FC = () => {
         <Switch>
           <AnimatePresence>
             {/* path components must be wrapped in a motion component */}
-            <Route exact path={nestedPath.getPath('')} component={OrdersView} />
+            <Route
+              exact
+              key="orders-view"
+              path={nestedPath.getPath('')}
+              component={OrdersView}
+            />
             <Route
               path={nestedPath.getPath('all')}
+              key="pending-orders"
               component={PendingOrdersView}
             />
             <Route
               path={nestedPath.getPath('track')}
+              key="track-orders"
               component={TrackOrdersView}
             />
             <Route
               path={nestedPath.getPath('status')}
+              key="order-status"
               component={OrderStatusView}
             />
-            <Redirect to={nestedPath.getPath('')} />
+            {/* <Redirect to={nestedPath.getPath('')} /> */}
           </AnimatePresence>
         </Switch>
       </Page.WidthRestrictor>

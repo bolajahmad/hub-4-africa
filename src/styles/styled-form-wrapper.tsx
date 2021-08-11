@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
-export const StyledFormWrapper = styled.form<{ width: number }>`
+export const StyledFormWrapper = styled.form<{
+  width: number;
+  smaller?: boolean;
+}>`
   width: 100%;
   margin: 0;
   padding: 0;
@@ -11,12 +14,12 @@ export const StyledFormWrapper = styled.form<{ width: number }>`
     margin: 0;
 
     > div + div {
-      margin-top: 1.5em;
+      margin-top: ${({ smaller }) => (smaller ? '0.75em' : '1.5em')};
     }
   }
 
   > div + div {
-    margin-top: 2em;
+    margin-top: ${({ smaller }) => (smaller ? '0em' : '2em')};
   }
 
   > .footer {

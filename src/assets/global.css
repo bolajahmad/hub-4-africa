@@ -34,6 +34,39 @@ body {
     color: #e03225;
 }
 
+.error-message {
+    color: #c70000;
+    font-size: 0.8em;
+}
+
+.error-box {
+    color: #e03225;
+    background-color: hsl(4, 44%, 93%);
+    font-size: 0.9rem;
+    border-radius: 4px;
+    max-width: 400px;
+    font-weight: 600;
+    min-width: fit-content;
+    padding: 0.5em 0.75em;
+    margin: auto;
+}
+
+.info {
+    color: rgb(23, 111, 211);
+}
+
+.info-box {
+    color: rgb(23, 111, 211);
+    background-color: rgb(206, 224, 245);
+    font-size: 0.9rem;
+    border-radius: 4px;
+    max-width: 400px;
+    font-weight: 600;
+    min-width: fit-content;
+    padding: 0.5em 0.75em;
+    margin: auto;
+}
+
 a {
     color: #00a159;
     text-decoration: none;

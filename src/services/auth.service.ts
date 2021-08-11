@@ -3,19 +3,22 @@ import { AuthenticatedUser, LoginModel, ResetPasswordModel } from '../models';
 
 export class AuthService {
   public static login(model: LoginModel) {
-    return ApiClient.post<LoginModel, AuthenticatedUser>('auth/signin', model);
+    return ApiClient.post<LoginModel, AuthenticatedUser>(
+      'admin/sign-in',
+      model
+    );
   }
 
   public static verifyEmail(model: { email: string }) {
     return ApiClient.post<{ email: string }, never>(
-      'auth/forgot-password',
+      'admin/forgot-password',
       model
     );
   }
 
   public static resetPassword(model: ResetPasswordModel) {
     return ApiClient.put<ResetPasswordModel, never>(
-      'auth/reset-password',
+      'admin/reset-password',
       model
     );
   }

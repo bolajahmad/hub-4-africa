@@ -68,6 +68,12 @@ export const StyledInputWrapper = styled.div<{
     appearance: none;
     transition: all 0.5s ease-in;
 
+    &.as-placeholder {
+      color: #130f26;
+      opacity: 0.5;
+      font-size: 12px;
+    }
+
     &::placeholder {
       font-size: 12px;
     }

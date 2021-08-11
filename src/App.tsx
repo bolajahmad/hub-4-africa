@@ -1,6 +1,7 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { ToastNotificationArea } from './components/utils';
 import ApplicationContext from './contexts';
 import { Dashboard, OrdersPage, SettingsPage } from './pages/app';
 import { ForgotPasswordPage, LoginPage } from './pages/auth';
@@ -30,6 +31,8 @@ function App() {
 
             <Redirect to="/" />
           </Switch>
+
+          <ToastNotificationArea />
         </ApplicationContext>
       </QueryClientProvider>
     </BrowserRouter>

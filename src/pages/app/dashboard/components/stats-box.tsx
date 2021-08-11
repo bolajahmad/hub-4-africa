@@ -1,33 +1,42 @@
 import React from 'react';
+import CountUp from 'react-countup';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import ArrowDownSquare from '../../../../assets/images/arrow-down-square.svg';
 import ArrowUpSquare from '../../../../assets/images/arrow-up-square.svg';
 import OrdersSquare from '../../../../assets/images/orders-icon.svg';
 import WalletIcon from '../../../../assets/images/wallet-icon.svg';
+import { LoaderComponent } from '../../../../components/utils';
+import { OrderStatsModel } from '../../../../models';
 
-export const dashboardStats = [
+export const dashboardStats: OrderStatsModel[] = [
   {
     name: 'Pending Orders',
-    value: 6,
+    id: 'pending',
+    value: 0,
+    link: '/app/orders/all',
     color: 'rgba(255, 208, 57, 0.1)',
     icon: ArrowDownSquare,
   },
   {
     name: 'Fulfilled Orders',
-    value: 60,
+    id: 'fulfilled',
+    value: 0,
     color: 'rgba(14, 190, 125, 0.1)',
     icon: ArrowUpSquare,
   },
   {
     name: 'Rejected Orders',
-    value: 3,
+    id: 'rejected',
+    value: 0,
     icon: OrdersSquare,
     color: 'rgba(255, 71, 87, 0.1)',
   },
   {
     name: 'Total Transactions',
+    id: 'transactions',
     icon: WalletIcon,
-    value: 3,
+    value: 0,
     color: 'rgba(62, 115, 171, 0.1)',
   },
 ];
@@ -39,6 +48,10 @@ const Wrapper = styled.div`
   gap: 20px;
   flex-wrap: nowrap;
   padding: 0em 1em;
+
+  &:hover {
+    cursor: pointer;
+  }
 
   .content {
     display: flex;
@@ -70,11 +83,8 @@ const IconStyle = styled.div<{
   background-color: ${({ color }) => color};
 `;
 
-export interface DashboardStatsProps {
-  name: string;
-  value: number;
-  color: string;
-  icon: string;
+export interface DashboardStatsProps extends OrderStatsModel {
+  isLoading?: boolean;
 }
 
 export const StatsBox: React.FC<DashboardStatsProps> = ({
@@ -82,16 +92,26 @@ export const StatsBox: React.FC<DashboardStatsProps> = ({
   value,
   color,
   icon,
+  isLoading,
+  link,
 }) => {
+  const history = useHistory();
+
   return (
-    <Wrapper>
+    <Wrapper onClick={() => link && history.push(link)}>
       <IconStyle color={color}>
         <img src={icon} alt="" />
       </IconStyle>
 
       <div className="content">
         <div className="title">{name}</div>
-        <div className="value">{value}</div>
+        {isLoading ? (
+          <LoaderComponent />
+        ) : (
+          <div className="value">
+            <CountUp end={value} formattingFn={(val) => val.toLocaleString()} />
+          </div>
+        )}
       </div>
     </Wrapper>
   );

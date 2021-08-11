@@ -11,34 +11,59 @@ const Wrapper = styled.div<{
 }>`
   table {
     font-weight: bold;
-    border-collapse: separate;
+    border-collapse: collapse;
     border-spacing: 0 5px;
+    width: 100%;
   }
 
   th,
   td {
-    padding: 15px 0 15px 30px;
+    text-align: left;
+    padding: 15px;
+    text-transform: capitalize;
+    border-top: 1px solid #eaeaea;
+
+    &:first-child {
+      padding-left: 30px;
+    }
+
+    &:last-child {
+      padding-right: 30px;
+    }
+  }
+
+  th {
+    opacity: 0.5;
     vertical-align: middle !important;
     border-color: transparent !important;
 
-    :first-child {
-      border-top-left-radius: 15px;
-      border-bottom-left-radius: 15px;
+    &:first-child {
+      border-top-left-radius: 8px;
     }
 
-    :last-child {
-      border-top-right-radius: 15px;
-      border-bottom-right-radius: 15px;
-      padding-right: 15px;
+    &:last-child {
+      border-top-right-radius: 8px;
+    }
+  }
+
+  tr:last-child {
+    td {
+      &:first-child {
+        border-bottom-left-radius: 8px;
+      }
+
+      &:last-child {
+        border-bottom-right-radius: 8px;
+      }
     }
   }
 
   thead tr {
-    background: #f0f2f7;
+    background: white;
   }
 
-  tbody tr:nth-child(2n) {
-    background: white;
+  tbody tr {
+    background-color: white;
   }
 `;
 

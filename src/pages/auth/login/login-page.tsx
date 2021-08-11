@@ -26,13 +26,11 @@ export const LoginPage: React.FC = () => {
           initialValues={{
             email: '',
             password: '',
-            fcmToken: 'hnndnnfcjdnvjvnkn',
           }}
           validationSchema={LoginSchema}
           onSubmit={(model) => logUserIn(model)}
         >
           {({ handleSubmit, isValid }) => {
-            console.log({ isValid });
             return (
               <StyledFormWrapper onSubmit={handleSubmit} width={width}>
                 <div className="main">

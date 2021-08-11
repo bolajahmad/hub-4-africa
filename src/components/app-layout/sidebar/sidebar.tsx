@@ -1,9 +1,15 @@
 import { motion, useMotionValue } from 'framer-motion';
 import React, { useEffect } from 'react';
-import { MdDashboard, MdSettings, MdSupervisorAccount } from 'react-icons/md';
+import {
+  MdDashboard,
+  MdExitToApp,
+  MdSettings,
+  MdSupervisorAccount,
+} from 'react-icons/md';
 import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../../../assets/images/Logo.svg';
+import { useAuthContext } from '../../../contexts/AuthContext';
 import { compileClass, useWindowDimensions } from '../../../utils';
 
 const Wrapper = styled(motion.div)<{
@@ -19,6 +25,11 @@ const Wrapper = styled(motion.div)<{
   justify-content: space-between;
   transition: box-shadow 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
   will-change: box-shadow;
+
+  > div {
+    position: relative;
+    height: 100%;
+  }
 
   &:focus,
   &:hover {
@@ -134,6 +145,31 @@ const Wrapper = styled(motion.div)<{
   }
 `;
 
+const LogoutButton = styled.button`
+  background: #252525;
+  position: absolute;
+  bottom: 0;
+  margin-top: auto;
+  border-radius: 8px;
+  color: white;
+  border: none;
+  width: 100%;
+  font-weight: bold;
+  padding: 15px 20px;
+  display: flex;
+  outline: none !important;
+  transition: 0.2s;
+
+  /* :hover {
+    background: white;
+    color: black;
+  } */
+
+  span {
+    margin-left: 15px;
+  }
+`;
+
 interface SidebarLink {
   name: string;
   path: string;
@@ -162,6 +198,7 @@ interface Props {
 
 export const Sidebar: React.FC<Props> = ({ isMobile }) => {
   const x = useMotionValue(0);
+  const { logout } = useAuthContext()!;
   const position = useMotionValue('initial');
   const { width } = useWindowDimensions();
 
@@ -206,6 +243,11 @@ export const Sidebar: React.FC<Props> = ({ isMobile }) => {
               </motion.div>
             ))}
         </div>
+
+        <LogoutButton onClick={logout}>
+          <MdExitToApp />
+          <span>Log out</span>
+        </LogoutButton>
       </div>
     </Wrapper>
   );
