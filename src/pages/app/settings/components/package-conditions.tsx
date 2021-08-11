@@ -1,8 +1,8 @@
 import { Formik } from 'formik';
 import React, { useMemo } from 'react';
 import { FiX } from 'react-icons/fi';
-import { MdDelete } from 'react-icons/md';
-import { useQuery } from 'react-query';
+import { MdDelete, MdEdit } from 'react-icons/md';
+import { useMutation, useQuery } from 'react-query';
 import { TextButton, TextInput } from '../../../../components';
 import { LoaderComponent } from '../../../../components/utils';
 import { UtilService } from '../../../../services';
@@ -13,10 +13,8 @@ export const PackageConditionsDrawer: React.FC<{
   closeDrawer: () => void;
 }> = ({ closeDrawer }) => {
   const { width } = useWindowDimensions();
-  const { data: packageData, isLoading: isFetching } = useQuery(
-    ['warehouses'],
-    UtilService.fetchConditions
-  );
+  const { mutate: createCondition } = useMutation(UtilService.createPackageCondition);
+  const { data: packageData, isLoading: isFetching } = useQuery(['warehouses'], UtilService.fetchConditions);
 
   const conditions = useMemo(() => packageData?.payload || [], [packageData]);
 
@@ -32,30 +30,25 @@ export const PackageConditionsDrawer: React.FC<{
 
       <Formik
         initialValues={{
-          packageCondition: '',
-          standardRate: '',
+          packageConditionName: '',
+          pricePerKG: '',
         }}
-        validateSchema={UpdateConditionSchema}
-        onSubmit={console.log}
+        validationSchema={UpdateConditionSchema}
+        onSubmit={(model) => {
+          createCondition({ ...model, pricePerKG: +model.pricePerKG });
+        }}
       >
         {({ handleSubmit, isValid }) => {
           return (
             <StyledFormWrapper width={width} smaller onSubmit={handleSubmit}>
               <div className="main">
-                <TextInput
-                  name="packageCondition"
-                  placeholder="Package Condition"
-                />
-                <TextInput name="standardRate" placeholder="Standard Rate" />
+                <TextInput name="packageConditionName" placeholder="Package Condition" />
+                <TextInput name="pricePerKG" placeholder="Standard Rate" />
               </div>
 
               <div className="footer mt-4">
                 <div>
-                  <button
-                    type="submit"
-                    disabled={!isValid}
-                    className="submit__btn"
-                  >
+                  <button type="submit" disabled={!isValid} className="submit__btn">
                     Update
                   </button>
                 </div>
@@ -76,9 +69,15 @@ export const PackageConditionsDrawer: React.FC<{
                 <div className="text">
                   <h4>{packageConditionName}</h4>
                 </div>
-                <TextButton>
-                  <MdDelete size="14" color="#e02e2e" />
-                </TextButton>
+
+                <div className="btns">
+                  <TextButton>
+                    <MdEdit size="14" color="#1DC286" />
+                  </TextButton>
+                  <TextButton>
+                    <MdDelete size="14" color="#e02e2e" />
+                  </TextButton>
+                </div>
               </li>
             ))}
           </ul>

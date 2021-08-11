@@ -13,8 +13,10 @@ export interface PackageConditionsModel {
 
 export interface CreateWarehouse {
   id?: string;
-  warehouseName: string;
-  warehouseCity: string;
+  stateName: string;
+  address: string;
   countryId: string;
-  pricePerKg: string;
+  pricePerKG: number;
+  createdAt?: string;
+  updatedAt?: string;
 }

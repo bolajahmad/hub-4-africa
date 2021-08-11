@@ -1,10 +1,10 @@
 import * as Yup from 'yup';
 
 export const UpdateWarehouseSchema = Yup.object().shape({
-  warehouseName: Yup.string().required('Warehouse name must be provided'),
+  stateName: Yup.string().required('Warehouse name must be provided'),
   countryId: Yup.string().required('Country must be provided'),
-  warehouseCity: Yup.string().required('Warehouse city must be provided'),
-  standardRate: Yup.string().required('Please provide rate'),
+  address: Yup.string().required('Warehouse city must be provided'),
+  pricePerKg: Yup.string().required('Please provide rate'),
 });
 
 export const UpdateConditionSchema = Yup.object().shape({

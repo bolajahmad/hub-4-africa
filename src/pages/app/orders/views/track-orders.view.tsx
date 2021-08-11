@@ -96,13 +96,9 @@ const PageWrapper = styled(motion.div)`
 export const TrackOrdersView: React.FC = () => {
   const { width } = useWindowDimensions();
   const { addNotification } = useNotificationContext()!;
-  const { mutate, isError, isLoading, error, data } = useMutation(
-    OrdersService.trackOrder,
-    {
-      onSuccess: ({ message }) =>
-        addNotification(NotificationType.SUCCESS, message, true),
-    }
-  );
+  const { mutate, isLoading, data } = useMutation(OrdersService.trackOrder, {
+    onSuccess: ({ message }) => addNotification(NotificationType.SUCCESS, message, true),
+  });
   const { values, handleChange, handleBlur } = useFormik({
     initialValues: { orderId: '' },
     onSubmit: (model) => {
@@ -131,11 +127,11 @@ export const TrackOrdersView: React.FC = () => {
                 placeholder="Paste order id"
               />
             </div>
-            {isError && (
+            {/* {isError && (
               <span className="error-message centered mt-4 bold-6">
-                {(error as any).message}: {(error as any).payload}
+                {(error as any)?.message}: {(error as any)?.payload}
               </span>
-            )}
+            )} */}
           </StyledInputWrapper>
 
           {data && (
@@ -164,11 +160,7 @@ export const TrackOrdersView: React.FC = () => {
                   marginRight: 'auto',
                 }}
               >
-                <button
-                  type="button"
-                  onClick={() => handleSubmit()}
-                  className="submit__btn"
-                >
+                <button type="button" onClick={() => handleSubmit()} className="submit__btn">
                   {isLoading ? <LoaderComponent /> : 'Track'}
                 </button>
               </div>

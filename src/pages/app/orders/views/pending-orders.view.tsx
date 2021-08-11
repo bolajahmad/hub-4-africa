@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import { motion } from 'framer-motion';
 import React, { useMemo, useState } from 'react';
-import { IoMdInformationCircle } from 'react-icons/io';
+import { BsInfoSquareFill } from 'react-icons/bs';
 import { IoReloadSharp } from 'react-icons/io5';
 import { useMutation, useQuery } from 'react-query';
 import ReactTooltip from 'react-tooltip';
@@ -21,9 +21,11 @@ const PageWrapper = styled(motion.div)`
     border-radius: 6px;
   }
 
-  > .header {
-    span {
-      margin-left: 0.3em;
+  > .content {
+    > .header {
+      display: flex;
+      gap: 5px;
+      align-items: center;
     }
   }
 
@@ -134,20 +136,13 @@ export const PendingOrdersView: React.FC = () => {
   const { addNotification } = useNotificationContext()!;
   const [orderSelected, setOrder] = useState<OrdersModel | undefined>();
   const { width } = useWindowDimensions();
-  const {
-    data,
-    isLoading: isFetching,
-    refetch,
-  } = useQuery(['pending-orders'], OrdersService.fetchPendingOrders);
-  const { mutate, isLoading, isError, error } = useMutation(
-    OrdersService.orderEstimate,
-    {
-      onSuccess: (response) => {
-        setOrder(undefined);
-        addNotification(NotificationType.SUCCESS, 'Order Updated Successfully');
-      },
-    }
-  );
+  const { data, isLoading: isFetching, refetch } = useQuery(['pending-orders'], OrdersService.fetchPendingOrders);
+  const { mutate, isLoading, isError, error } = useMutation(OrdersService.orderEstimate, {
+    onSuccess: (response) => {
+      setOrder(undefined);
+      addNotification(NotificationType.SUCCESS, 'Order Updated Successfully');
+    },
+  });
   const pendingOrders = useMemo(() => data?.payload || [], [data]);
 
   const {
@@ -184,41 +179,24 @@ export const PendingOrdersView: React.FC = () => {
               />
             </div>
 
-            {isError && (
-              <span className="error-message centered">
-                {(error as any)?.message}
-              </span>
-            )}
-            <span
-              style={{ marginTop: '3em', fontSize: '0.7em', fontWeight: 500 }}
-            >
-              Order Details
-            </span>
+            {isError && <span className="error-message centered">{(error as any)?.message}</span>}
+            <span style={{ marginTop: '3em', fontSize: '0.7em', fontWeight: 500 }}>Order Details</span>
           </StyledInputWrapper>
 
           <div className="list">
-            <span style={{ opacity: 0.6, fontWeight: 400 }}>
-              Sending Location
-            </span>
+            <span style={{ opacity: 0.6, fontWeight: 400 }}>Sending Location</span>
             <span>
-              {orderSelected.warehouses[0].address},{' '}
-              {orderSelected.warehouses[0].state}
+              {orderSelected.warehouses[0].address}, {orderSelected.warehouses[0].state}
             </span>
           </div>
           <div className="list">
-            <span style={{ opacity: 0.6, fontWeight: 400 }}>
-              Package Conditions
-            </span>
+            <span style={{ opacity: 0.6, fontWeight: 400 }}>Package Conditions</span>
             <span>
-              {orderSelected.packageConditions
-                .map(({ packageConditionName }) => packageConditionName)
-                .join(', ')}
+              {orderSelected.packageConditions.map(({ packageConditionName }) => packageConditionName).join(', ')}
             </span>
           </div>
           <div className="list">
-            <span style={{ opacity: 0.6, fontWeight: 400 }}>
-              Receiver&rsquo;s Location
-            </span>
+            <span style={{ opacity: 0.6, fontWeight: 400 }}>Receiver&rsquo;s Location</span>
             <span>
               {orderSelected.pickupLocalGovt},&nbsp;{orderSelected.pickupState}
             </span>
@@ -242,12 +220,9 @@ export const PendingOrdersView: React.FC = () => {
                   onClick={() =>
                     mutate({
                       pickupState: orderSelected.pickupState,
-                      packageConditionIds: orderSelected.packageConditions.map(
-                        ({ id }) => id
-                      ),
+                      packageConditionIds: orderSelected.packageConditions.map(({ id }) => id),
                       packageSize: Number(weight),
-                      meansOfTransportationId:
-                        orderSelected.meansOfTransportations[0].id,
+                      meansOfTransportationId: orderSelected.meansOfTransportations[0].id,
                       warehouseId: orderSelected.warehouses[0].id,
                     })
                   }
@@ -269,7 +244,7 @@ export const PendingOrdersView: React.FC = () => {
         <h2 className="header">
           Pending Orders
           <span data-tip data-for="global">
-            <IoMdInformationCircle size="15" />
+            <BsInfoSquareFill size="15" />
           </span>
           <ReactTooltip id="global" className="tooltip" place="bottom">
             <p style={{ fontWeight: 400, color: 'white', maxWidth: 200 }}>

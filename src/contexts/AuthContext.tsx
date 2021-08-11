@@ -23,56 +23,36 @@ export interface AuthContextInterface {
   error: Error;
 }
 
-const Context = React.createContext<AuthContextInterface | undefined>(
-  undefined
-);
+const Context = React.createContext<AuthContextInterface | undefined>(undefined);
 
 const AuthContext: React.FC<AuthContextProps> = ({ children }) => {
-  const TOKEN = StorageService.getFromLocal<TokenDetailsModel>(
-    StorageEnums.HUB_CURRENT_ADMIN
-  )!;
-  const userAccount = StorageService.getFromLocal<AuthenticatedUser>(
-    StorageEnums.HUB_CURRENT_ADMIN
-  );
-  const [isAuthenticated, setIsAuthenticated] = React.useState(
-    !!TOKEN && !!TOKEN.token
-  );
-  const [account, setAccount] = React.useState<AuthenticatedUser | null>(
-    userAccount
-  );
+  const TOKEN = StorageService.getFromLocal<TokenDetailsModel>(StorageEnums.HUB_CURRENT_ADMIN)!;
+  const userAccount = StorageService.getFromLocal<AuthenticatedUser>(StorageEnums.HUB_CURRENT_ADMIN);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(!!TOKEN && !!TOKEN.token);
+  const [account, setAccount] = React.useState<AuthenticatedUser | null>(userAccount);
   const history = useHistory();
 
-  const { mutate, isLoading, isError, isSuccess, error } = useMutation(
-    AuthService.login,
-    {
-      onSuccess: ({ payload }) => {
-        if (payload) {
-          setAccount(payload);
-          StorageService.setToLocal(StorageEnums.AUTH_TOKEN, payload.token);
-          StorageService.setToLocal(StorageEnums.HUB_CURRENT_ADMIN, payload);
-          StorageService.setToLocal(
-            StorageEnums.REFRESH_TOKEN,
-            payload.refreshToken,
-            2592000000
-          );
-          history.push('/app/dashboard');
-        }
-      },
-    }
-  );
+  const { mutate, isLoading, isError, isSuccess, error } = useMutation(AuthService.login, {
+    onSuccess: ({ payload }) => {
+      if (payload) {
+        setAccount(payload);
+        StorageService.setToLocal(StorageEnums.AUTH_TOKEN, payload.token);
+        StorageService.setToLocal(StorageEnums.HUB_CURRENT_ADMIN, payload);
+        StorageService.setToLocal(StorageEnums.REFRESH_TOKEN, payload.refreshToken, 2592000000);
+        history.push('/app/dashboard');
+      }
+    },
+  });
 
   const login = React.useCallback(
     (user: LoginModel) => {
       mutate(user);
     },
-    [mutate]
+    [mutate],
   );
 
   const logout = React.useCallback(() => {
-    StorageService.removeFromLocal([
-      StorageEnums.HUB_CURRENT_ADMIN,
-      StorageEnums.AUTH_TOKEN,
-    ]);
+    StorageService.removeFromLocal([StorageEnums.HUB_CURRENT_ADMIN, StorageEnums.AUTH_TOKEN]);
     setAccount(null);
     setIsAuthenticated(false);
     history.push('/login');

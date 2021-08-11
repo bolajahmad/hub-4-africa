@@ -11,7 +11,7 @@ export class OrdersService {
   }
 
   public static trackOrder(id: string) {
-    return ApiClient.get<OrdersModel>(`order/${id}`);
+    return ApiClient.get<OrdersModel>(`admin/${id}`);
   }
 
   public static orderEstimate(model: RequestPriceEstimateModel) {
