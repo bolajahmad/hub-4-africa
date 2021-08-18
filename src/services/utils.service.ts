@@ -2,7 +2,7 @@ import { ApiClient } from '../api';
 import {
   CreateWarehouse,
   PackageConditionsModel,
-  WarehouseModel
+  WarehouseModel,
 } from '../models';
 
 export class UtilService {
@@ -16,23 +16,26 @@ export class UtilService {
 
   public static fetchConditions() {
     return ApiClient.get<PackageConditionsModel[]>(
-      'admin/packageConditions/all-packageConditions',
+      'admin/packageConditions/all-packageConditions'
     );
   }
 
   public static createPackageCondition(model: Partial<PackageConditionsModel>) {
-    return ApiClient.post<Partial<PackageConditionsModel>>('admin/packageCondition', model);
+    return ApiClient.post<Partial<PackageConditionsModel>>(
+      'admin/packageCondition',
+      model
+    );
   }
 
   public static fetchOrderStatus() {
     return ApiClient.get<{ id: string; name: string }[]>(
-      'admin/order-statuses',
+      'admin/order-statuses'
     );
   }
 
   public static fetchCountries() {
     return ApiClient.get<{ countryName: string; id: string }>(
-      'warehouse/countries',
+      'warehouse/countries'
     );
   }
 }

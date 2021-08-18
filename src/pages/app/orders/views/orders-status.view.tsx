@@ -3,7 +3,11 @@ import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { PrimaryTable } from '../../../../components';
-import { CustomDropdown, CustomDropdownItem, LoaderComponent } from '../../../../components/utils';
+import {
+  CustomDropdown,
+  CustomDropdownItem,
+  LoaderComponent,
+} from '../../../../components/utils';
 import { OrdersModel } from '../../../../models';
 import { OrdersService } from '../../../../services';
 import { StyledProgressWrapper } from '../../../../styles';
@@ -22,8 +26,14 @@ const PageWrapper = styled(motion.div)`
 `;
 
 export const OrderStatusView: React.FC = () => {
-  const { data, isLoading } = useQuery(['order-status'], OrdersService.fetchOrderStatus);
-  const orders = useMemo(() => /* data?.payload ||  */ [] as OrdersModel[], [data]);
+  const { data, isLoading } = useQuery(
+    ['order-status'],
+    OrdersService.fetchOrderStatus
+  );
+  const orders = useMemo(
+    () => /* data?.payload ||  */ [] as OrdersModel[],
+    [data]
+  );
 
   return (
     <PageWrapper>
@@ -52,7 +62,7 @@ export const OrderStatusView: React.FC = () => {
                     </span>
                   ),
                 },
-                { Header: 'Receiver\'s Name', accessor: 'receiverName' },
+                { Header: "Receiver's Name", accessor: 'receiverName' },
                 {
                   Header: 'Progress Status',
                   accessor: () => (
@@ -65,7 +75,9 @@ export const OrderStatusView: React.FC = () => {
                 {
                   Header: 'Update Status',
                   accessor: () => (
-                    <CustomDropdown triggerComponent={() => <span>In-Progress</span>}>
+                    <CustomDropdown
+                      triggerComponent={() => <span>In-Progress</span>}
+                    >
                       <CustomDropdownItem>Ready</CustomDropdownItem>
                     </CustomDropdown>
                   ),

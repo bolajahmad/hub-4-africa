@@ -97,7 +97,8 @@ export const TrackOrdersView: React.FC = () => {
   const { width } = useWindowDimensions();
   const { addNotification } = useNotificationContext()!;
   const { mutate, isLoading, data } = useMutation(OrdersService.trackOrder, {
-    onSuccess: ({ message }) => addNotification(NotificationType.SUCCESS, message, true),
+    onSuccess: ({ message }) =>
+      addNotification(NotificationType.SUCCESS, message, true),
   });
   const { values, handleChange, handleBlur } = useFormik({
     initialValues: { orderId: '' },
@@ -160,7 +161,11 @@ export const TrackOrdersView: React.FC = () => {
                   marginRight: 'auto',
                 }}
               >
-                <button type="button" onClick={() => handleSubmit()} className="submit__btn">
+                <button
+                  type="button"
+                  onClick={() => handleSubmit()}
+                  className="submit__btn"
+                >
                   {isLoading ? <LoaderComponent /> : 'Track'}
                 </button>
               </div>

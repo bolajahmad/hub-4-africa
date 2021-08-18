@@ -22,7 +22,7 @@ export class Notification {
   constructor(
     public type: NotificationType,
     message: NotificationContent,
-    public sticky?: boolean,
+    public sticky?: boolean
   ) {
     if (!message) {
       this.message = [];

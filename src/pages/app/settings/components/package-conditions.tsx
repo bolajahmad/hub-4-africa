@@ -13,8 +13,13 @@ export const PackageConditionsDrawer: React.FC<{
   closeDrawer: () => void;
 }> = ({ closeDrawer }) => {
   const { width } = useWindowDimensions();
-  const { mutate: createCondition } = useMutation(UtilService.createPackageCondition);
-  const { data: packageData, isLoading: isFetching } = useQuery(['warehouses'], UtilService.fetchConditions);
+  const { mutate: createCondition } = useMutation(
+    UtilService.createPackageCondition
+  );
+  const { data: packageData, isLoading: isFetching } = useQuery(
+    ['warehouses'],
+    UtilService.fetchConditions
+  );
 
   const conditions = useMemo(() => packageData?.payload || [], [packageData]);
 
@@ -42,13 +47,20 @@ export const PackageConditionsDrawer: React.FC<{
           return (
             <StyledFormWrapper width={width} smaller onSubmit={handleSubmit}>
               <div className="main">
-                <TextInput name="packageConditionName" placeholder="Package Condition" />
+                <TextInput
+                  name="packageConditionName"
+                  placeholder="Package Condition"
+                />
                 <TextInput name="pricePerKG" placeholder="Standard Rate" />
               </div>
 
               <div className="footer mt-4">
                 <div>
-                  <button type="submit" disabled={!isValid} className="submit__btn">
+                  <button
+                    type="submit"
+                    disabled={!isValid}
+                    className="submit__btn"
+                  >
                     Update
                   </button>
                 </div>

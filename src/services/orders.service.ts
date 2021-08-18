@@ -16,7 +16,7 @@ export class OrdersService {
 
   public static orderEstimate(model: { weight: number; orderId: string }) {
     return ApiClient.patch<
-      { weight: number; orderId: string; },
+      { weight: number; orderId: string },
       { estimatedPrice: number }
     >('admin/update-order-price', model);
   }

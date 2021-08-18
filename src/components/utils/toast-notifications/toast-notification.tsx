@@ -80,39 +80,47 @@ const Container = styled(motion.div)`
 
 const NOTIFICATION_TIMEOUT = 3 * 1000; // 5 Seconds
 
-export const ToastNotification: React.FC<Notification> = ({ id, type, message, sticky }) => {
+export const ToastNotification: React.FC<Notification> = ({
+  id,
+  type,
+  message,
+  sticky,
+}) => {
   const { removeNotification } = useNotificationContext()!;
   const dismissNotification = React.useCallback(() => {
     removeNotification(id);
   }, [id]);
 
-  const timeoutDuration = type === NotificationType.ERROR ? NOTIFICATION_TIMEOUT * 2 : NOTIFICATION_TIMEOUT;
+  const timeoutDuration =
+    type === NotificationType.ERROR
+      ? NOTIFICATION_TIMEOUT * 2
+      : NOTIFICATION_TIMEOUT;
 
   const state = React.useMemo(() => {
     switch (type) {
-    case NotificationType.SUCCESS:
-      return 'success';
-    case NotificationType.INFO:
-      return 'info';
-    case NotificationType.ERROR:
-      return 'error';
-    case NotificationType.WARNING:
-      return 'warning';
+      case NotificationType.SUCCESS:
+        return 'success';
+      case NotificationType.INFO:
+        return 'info';
+      case NotificationType.ERROR:
+        return 'error';
+      case NotificationType.WARNING:
+        return 'warning';
     }
   }, [type]);
 
   const Icon = React.useMemo(() => {
     switch (type) {
-    case NotificationType.SUCCESS:
-      return FiCheck;
-    case NotificationType.INFO:
-      return FiInfo;
-    case NotificationType.ERROR:
-      return FiX;
-    case NotificationType.WARNING:
-      return FiTriangle;
-    default:
-      return FiCheck;
+      case NotificationType.SUCCESS:
+        return FiCheck;
+      case NotificationType.INFO:
+        return FiInfo;
+      case NotificationType.ERROR:
+        return FiX;
+      case NotificationType.WARNING:
+        return FiTriangle;
+      default:
+        return FiCheck;
     }
   }, [type]);
 
@@ -135,15 +143,20 @@ export const ToastNotification: React.FC<Notification> = ({ id, type, message, s
         animate: { x: 0, opacity: 1 },
         exit: { opacity: 0 },
       } as MotionProps),
-    [],
+    []
   );
 
   return (
-    <Container className="overflow-hidden flex items-center" {...animationProps}>
+    <Container
+      className="overflow-hidden flex items-center"
+      {...animationProps}
+    >
       <div className={`toast__indicator flex-grow-0 flex-shrink-0 ${state}`} />
       <div className="flex justify-between items-center px-3 py-4 flex-grow">
         <div className="flex">
-          <div className={`toast__icon centered rounded-full flex-shrink-0 ${state}`}>
+          <div
+            className={`toast__icon centered rounded-full flex-shrink-0 ${state}`}
+          >
             <Icon size={16} strokeWidth={3} />
           </div>
           <div className="toast__content ml-2">
@@ -155,7 +168,10 @@ export const ToastNotification: React.FC<Notification> = ({ id, type, message, s
             ))}
           </div>
         </div>
-        <button className="toast__dismiss-button flex-shrink-0 rounded-full p-0 centered" onClick={dismissNotification}>
+        <button
+          className="toast__dismiss-button flex-shrink-0 rounded-full p-0 centered"
+          onClick={dismissNotification}
+        >
           <FiX size={18} strokeWidth={2} />
         </button>
       </div>

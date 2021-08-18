@@ -65,7 +65,15 @@ export const DashboardView: React.FC = () => {
                   <React.Fragment>
                     <CopyCard data-tip={id} data-for={id} title={id} text="Copy Number" />
                     <ReactTooltip id={id} className="tooltip" place="bottom">
-                      <p style={{ fontWeight: 400, color: 'white', maxWidth: 200 }}>{id} </p>
+                      <p
+                        style={{
+                          fontWeight: 400,
+                          color: 'white',
+                          maxWidth: 200,
+                        }}
+                      >
+                        {id}{' '}
+                      </p>
                     </ReactTooltip>
                   </React.Fragment>
                 ),
