@@ -51,17 +51,17 @@ export const AdminRoleDrawer: React.FC<{
 
       <Formik
         initialValues={
-          isEditing
-            ? {
-                ...isEditing,
-                warehouseId: isEditing.warehouse.id as string,
-              }
-            : {
-                fullName: '',
-                email: '',
-                warehouseId: '',
-                password: '',
-              }
+          isEditing ?
+            {
+              ...isEditing,
+              warehouseId: isEditing.warehouse.id as string,
+            } :
+            {
+              fullName: '',
+              email: '',
+              warehouseId: '',
+              password: '',
+            }
         }
         enableReinitialize
         validationSchema={UpdateAdminSchema}
@@ -83,11 +83,11 @@ export const AdminRoleDrawer: React.FC<{
                     valueProp="state"
                     displayProp="address"
                     placeholder={
-                      isEditing
-                        ? isEditing.warehouse.address +
+                      isEditing ?
+                        isEditing.warehouse.address +
                           ',' +
-                          isEditing.warehouse.state
-                        : 'Assigned Warehouse'
+                          isEditing.warehouse.state :
+                        'Assigned Warehouse'
                     }
                   />
                 ) : null}

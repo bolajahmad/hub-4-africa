@@ -18,11 +18,11 @@ const Wrapper = styled.div<LoaderProps>`
   justify-content: center;
   gap: 5px;
   font-size: ${({ fontSize }) =>
-    fontSize === 'normal'
-      ? '0.9rem'
-      : fontSize === 'large'
-      ? '1.2rem'
-      : '0.8rem'};
+    fontSize === 'normal' ?
+      '0.9rem' :
+      fontSize === 'large' ?
+        '1.2rem' :
+        '0.8rem'};
 
   > * + * {
     margin-top: 1.5em;
@@ -50,9 +50,9 @@ const Wrapper = styled.div<LoaderProps>`
     -webkit-animation: ${loading} 1.1s infinite linear;
     animation: ${loading} 1.1s infinite linear;
     border: ${({ borderWidth, bodyColor }) =>
-      `${borderWidth}px solid ${bodyColor}`};
+    `${borderWidth}px solid ${bodyColor}`};
     border-left: ${({ borderWidth, headColor }) =>
-      `${borderWidth}px solid ${headColor}`};
+    `${borderWidth}px solid ${headColor}`};
   }
 `;
 
