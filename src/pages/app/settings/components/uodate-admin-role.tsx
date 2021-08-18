@@ -22,7 +22,7 @@ export const AdminRoleDrawer: React.FC<{
 
   const [isEditing, setEditing] = useState<Admins | undefined>();
 
-  console.log({ isEditing });
+  console.log({ isEditing, warehouses });
 
   return (
     <div className="content">
@@ -61,7 +61,7 @@ export const AdminRoleDrawer: React.FC<{
               <div className="main">
                 <TextInput name="fullName" placeholder="Full Name" />
                 <TextInput name="email" placeholder="Email Address" />
-                {warehouses.length ? (
+                {warehouses?.length ? (
                   <SelectInput
                     name="warehouseId"
                     options={warehouses}

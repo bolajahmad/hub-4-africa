@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
+import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 import { PrimaryTable } from '../../../../components';
-import { CustomDropdown, CustomDropdownItem, LoaderComponent } from '../../../../components/utils';
+import { CopyCard, CustomDropdown, CustomDropdownItem, LoaderComponent } from '../../../../components/utils';
 import { OrdersModel, OrderStatsModel, OrderStatsType } from '../../../../models';
 import { UtilService } from '../../../../services';
 import { DashboardService } from '../../../../services/dashboard.service';
@@ -60,7 +61,14 @@ export const DashboardView: React.FC = () => {
             columns={[
               {
                 Header: 'Tracking NO.',
-                accessor: ({ id }: OrdersModel) => <span>#{id}</span>,
+                accessor: ({ id }: OrdersModel) => (
+                  <React.Fragment>
+                    <CopyCard data-tip={id} data-for={id} title={id} text="Copy Number" />
+                    <ReactTooltip id={id} className="tooltip" place="bottom">
+                      <p style={{ fontWeight: 400, color: 'white', maxWidth: 200 }}>{id} </p>
+                    </ReactTooltip>
+                  </React.Fragment>
+                ),
               },
               {
                 Header: 'Delivery Location',
@@ -83,9 +91,11 @@ export const DashboardView: React.FC = () => {
               {
                 Header: 'Update Status',
                 accessor: () => (
-                  <CustomDropdown triggerComponent={() => <span>In-Progress</span>}>
+                  <CustomDropdown triggerComponent={() => <span>In Progress</span>}>
                     {status.map(({ name, id }) => (
-                      <CustomDropdownItem key={id}>{name.toLowerCase().replace('_', ' ')}</CustomDropdownItem>
+                      <CustomDropdownItem className="capitalize" key={id}>
+                        {name.split('_').join(' ')}
+                      </CustomDropdownItem>
                     ))}
                   </CustomDropdown>
                 ),

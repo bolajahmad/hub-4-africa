@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import React, { useMemo } from 'react';
 import { FiX } from 'react-icons/fi';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { MdDelete } from 'react-icons/md';
 import { useMutation, useQuery } from 'react-query';
 import { TextButton, TextInput } from '../../../../components';
 import { LoaderComponent } from '../../../../components/utils';
@@ -71,9 +71,9 @@ export const PackageConditionsDrawer: React.FC<{
                 </div>
 
                 <div className="btns">
-                  <TextButton>
+                  {/* <TextButton>
                     <MdEdit size="14" color="#1DC286" />
-                  </TextButton>
+                  </TextButton> */}
                   <TextButton>
                     <MdDelete size="14" color="#e02e2e" />
                   </TextButton>

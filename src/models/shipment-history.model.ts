@@ -37,7 +37,7 @@ export interface OrdersModel {
   paymentStatus: number;
   createdAt: string;
   updatedAt: string;
-  meansOfTransportations: MeansofTransportation[];
+  meansOfTransportation: MeansofTransportation;
   packageConditions: PackageConditions[];
-  warehouses: WarehouseModel[];
+  warehouse: WarehouseModel;
 }
