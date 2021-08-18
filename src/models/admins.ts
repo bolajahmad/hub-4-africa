@@ -1,4 +1,3 @@
-
 export interface Admins {
   email: string;
   fullName: string;
@@ -13,7 +12,7 @@ export interface Admins {
   };
   socketId: string | null;
   warehouse: {
-    address: string
+    address: string;
     createdAt: string;
     id: string;
     pricePerKG: number;

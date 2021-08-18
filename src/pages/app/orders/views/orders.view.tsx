@@ -32,7 +32,11 @@ const PageWrapper = styled(StyledDashboard)`
       height: 5em;
       align-items: center;
       justify-content: center;
-      background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 34.67%, rgba(249, 249, 249, 0.2) 65.33%);
+      background-image: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.2) 34.67%,
+        rgba(249, 249, 249, 0.2) 65.33%
+      );
       border-radius: 50%;
     }
 
@@ -139,7 +143,9 @@ export const OrdersView: React.FC = () => {
 
         <div className="card-content">
           <div className="header">Process Faster</div>
-          <h3 className="text">Increase better experience when you process orders faster.</h3>
+          <h3 className="text">
+            Increase better experience when you process orders faster.
+          </h3>
         </div>
       </div>
 

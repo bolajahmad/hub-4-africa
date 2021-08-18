@@ -13,6 +13,7 @@ import { OrdersModel } from '../../../../models';
 import { OrdersService } from '../../../../services';
 import { StyledFormWrapper, StyledInputWrapper } from '../../../../styles';
 import { NotificationType, useWindowDimensions } from '../../../../utils';
+
 const PageWrapper = styled(motion.div)`
   width: 100%;
   padding: 1.5em 2.5em;
@@ -136,13 +137,20 @@ export const PendingOrdersView: React.FC = () => {
   const { addNotification } = useNotificationContext()!;
   const [orderSelected, setOrder] = useState<OrdersModel | undefined>();
   const { width } = useWindowDimensions();
-  const { data, isLoading: isFetching, refetch } = useQuery(['pending-orders'], OrdersService.fetchPendingOrders);
-  const { mutate, isLoading, isError, error } = useMutation(OrdersService.orderEstimate, {
-    onSuccess: (response) => {
-      setOrder(undefined);
-      addNotification(NotificationType.SUCCESS, 'Order Updated Successfully');
-    },
-  });
+  const {
+    data,
+    isLoading: isFetching,
+    refetch,
+  } = useQuery(['pending-orders'], OrdersService.fetchPendingOrders);
+  const { mutate, isLoading, isError, error } = useMutation(
+    OrdersService.orderEstimate,
+    {
+      onSuccess: (response) => {
+        setOrder(undefined);
+        addNotification(NotificationType.SUCCESS, 'Order Updated Successfully');
+      },
+    }
+  );
   const pendingOrders = useMemo(() => data?.payload || [], [data]);
 
   const {
@@ -179,24 +187,41 @@ export const PendingOrdersView: React.FC = () => {
               />
             </div>
 
-            {isError && <span className="error-message centered">{(error as any)?.message}</span>}
-            <span style={{ marginTop: '3em', fontSize: '0.7em', fontWeight: 500 }}>Order Details</span>
+            {isError && (
+              <span className="error-message centered">
+                {(error as any)?.message}
+              </span>
+            )}
+            <span
+              style={{ marginTop: '3em', fontSize: '0.7em', fontWeight: 500 }}
+            >
+              Order Details
+            </span>
           </StyledInputWrapper>
 
           <div className="list">
-            <span style={{ opacity: 0.6, fontWeight: 400 }}>Sending Location</span>
+            <span style={{ opacity: 0.6, fontWeight: 400 }}>
+              Sending Location
+            </span>
             <span>
-              {orderSelected.warehouses[0].address}, {orderSelected.warehouses[0].state}
+              {orderSelected?.warehouse?.address},{' '}
+              {orderSelected?.warehouse?.state}
             </span>
           </div>
           <div className="list">
-            <span style={{ opacity: 0.6, fontWeight: 400 }}>Package Conditions</span>
+            <span style={{ opacity: 0.6, fontWeight: 400 }}>
+              Package Conditions
+            </span>
             <span>
-              {orderSelected.packageConditions.map(({ packageConditionName }) => packageConditionName).join(', ')}
+              {orderSelected.packageConditions
+                .map(({ packageConditionName }) => packageConditionName)
+                .join(', ') ?? 'Not Specified'}
             </span>
           </div>
           <div className="list">
-            <span style={{ opacity: 0.6, fontWeight: 400 }}>Receiver&rsquo;s Location</span>
+            <span style={{ opacity: 0.6, fontWeight: 400 }}>
+              Receiver&rsquo;s Location
+            </span>
             <span>
               {orderSelected.pickupLocalGovt},&nbsp;{orderSelected.pickupState}
             </span>
@@ -219,11 +244,8 @@ export const PendingOrdersView: React.FC = () => {
                   type="button"
                   onClick={() =>
                     mutate({
-                      pickupState: orderSelected.pickupState,
-                      packageConditionIds: orderSelected.packageConditions.map(({ id }) => id),
-                      packageSize: Number(weight),
-                      meansOfTransportationId: orderSelected.meansOfTransportations[0].id,
-                      warehouseId: orderSelected.warehouses[0].id,
+                      orderId: orderSelected.id,
+                      weight: Number(weight),
                     })
                   }
                   className="submit__btn"
@@ -248,7 +270,7 @@ export const PendingOrdersView: React.FC = () => {
           </span>
           <ReactTooltip id="global" className="tooltip" place="bottom">
             <p style={{ fontWeight: 400, color: 'white', maxWidth: 200 }}>
-              These are orders that haven’t been recieved at the warehouse{' '}
+              These are orders that haven’t been received at the warehouse{' '}
             </p>
           </ReactTooltip>
         </h2>

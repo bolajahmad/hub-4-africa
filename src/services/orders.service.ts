@@ -1,5 +1,5 @@
 import { ApiClient } from '../api';
-import { OrdersModel, RequestPriceEstimateModel } from '../models';
+import { OrdersModel } from '../models';
 
 export class OrdersService {
   public static fetchPendingOrders() {
@@ -14,10 +14,10 @@ export class OrdersService {
     return ApiClient.get<OrdersModel>(`admin/${id}`);
   }
 
-  public static orderEstimate(model: RequestPriceEstimateModel) {
-    return ApiClient.post<
-      RequestPriceEstimateModel,
+  public static orderEstimate(model: { weight: number; orderId: string }) {
+    return ApiClient.patch<
+      { weight: number; orderId: string },
       { estimatedPrice: number }
-    >('order/estimate', model);
+    >('admin/update-order-price', model);
   }
 }

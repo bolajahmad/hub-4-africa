@@ -10,12 +10,14 @@ const Wrapper = styled.div`
   min-height: fit-content;
 
   .dropdown-btn {
+    font-size: 0.85em;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    border: none;
     min-width: fit-content;
-    padding: 10px 20px;
+    padding: 0.5em 1em;
     font-weight: 500;
     cursor: context-menu;
     background-color: #f9f9f9;
@@ -23,10 +25,12 @@ const Wrapper = styled.div`
 
     span {
       flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .icon {
-      flex: 0;
       border-left: 1px solid #f9f9f9;
       background: #f9f9f9;
     }
@@ -88,14 +92,10 @@ export const CustomDropdown: React.FC<Props> = ({
 
   return (
     <Wrapper onClick={toggle} className={className} ref={ref}>
-      <div className="dropdown-btn">
+      <button className="dropdown-btn">
         {<TriggerComponent />}
-        {withCaret && (
-          <span className="icon">
-            {!isOpen ? <RiArrowDownSLine /> : <RiArrowUpSLine />}
-          </span>
-        )}
-      </div>
+        {withCaret && !isOpen ? <RiArrowDownSLine /> : <RiArrowUpSLine />}
+      </button>
       <CustomDropdownMenu>{isOpen && children}</CustomDropdownMenu>
     </Wrapper>
   );

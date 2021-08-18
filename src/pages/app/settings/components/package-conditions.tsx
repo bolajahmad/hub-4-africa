@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import React, { useMemo } from 'react';
 import { FiX } from 'react-icons/fi';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { MdDelete } from 'react-icons/md';
 import { useMutation, useQuery } from 'react-query';
 import { TextButton, TextInput } from '../../../../components';
 import { LoaderComponent } from '../../../../components/utils';
@@ -13,8 +13,13 @@ export const PackageConditionsDrawer: React.FC<{
   closeDrawer: () => void;
 }> = ({ closeDrawer }) => {
   const { width } = useWindowDimensions();
-  const { mutate: createCondition } = useMutation(UtilService.createPackageCondition);
-  const { data: packageData, isLoading: isFetching } = useQuery(['warehouses'], UtilService.fetchConditions);
+  const { mutate: createCondition } = useMutation(
+    UtilService.createPackageCondition
+  );
+  const { data: packageData, isLoading: isFetching } = useQuery(
+    ['warehouses'],
+    UtilService.fetchConditions
+  );
 
   const conditions = useMemo(() => packageData?.payload || [], [packageData]);
 
@@ -42,13 +47,20 @@ export const PackageConditionsDrawer: React.FC<{
           return (
             <StyledFormWrapper width={width} smaller onSubmit={handleSubmit}>
               <div className="main">
-                <TextInput name="packageConditionName" placeholder="Package Condition" />
+                <TextInput
+                  name="packageConditionName"
+                  placeholder="Package Condition"
+                />
                 <TextInput name="pricePerKG" placeholder="Standard Rate" />
               </div>
 
               <div className="footer mt-4">
                 <div>
-                  <button type="submit" disabled={!isValid} className="submit__btn">
+                  <button
+                    type="submit"
+                    disabled={!isValid}
+                    className="submit__btn"
+                  >
                     Update
                   </button>
                 </div>
@@ -71,9 +83,9 @@ export const PackageConditionsDrawer: React.FC<{
                 </div>
 
                 <div className="btns">
-                  <TextButton>
+                  {/* <TextButton>
                     <MdEdit size="14" color="#1DC286" />
-                  </TextButton>
+                  </TextButton> */}
                   <TextButton>
                     <MdDelete size="14" color="#e02e2e" />
                   </TextButton>

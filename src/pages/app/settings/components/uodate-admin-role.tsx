@@ -8,21 +8,36 @@ import { LoaderComponent } from '../../../../components/utils';
 import { Admins } from '../../../../models/admins';
 import { DashboardService, UtilService } from '../../../../services';
 import { StyledFormWrapper } from '../../../../styles';
-import { generateID, UpdateAdminSchema, useWindowDimensions } from '../../../../utils';
+import {
+  generateID,
+  UpdateAdminSchema,
+  useWindowDimensions,
+} from '../../../../utils';
 
 export const AdminRoleDrawer: React.FC<{
   closeDrawer: () => void;
 }> = ({ closeDrawer }) => {
   const { width } = useWindowDimensions();
-  const { mutate: createAdmin, isLoading: isSubmitting } = useMutation(DashboardService.createAdmin);
-  const { data: adminData, isLoading } = useQuery(['admins'], DashboardService.getAdmins);
-  const { data: warehouseData } = useQuery(['warehouses'], UtilService.fetchWarehouse);
-  const warehouses = useMemo(() => warehouseData?.payload || [], [warehouseData]);
+  const { mutate: createAdmin, isLoading: isSubmitting } = useMutation(
+    DashboardService.createAdmin
+  );
+  const { data: adminData, isLoading } = useQuery(
+    ['admins'],
+    DashboardService.getAdmins
+  );
+  const { data: warehouseData } = useQuery(
+    ['warehouses'],
+    UtilService.fetchWarehouse
+  );
+  const warehouses = useMemo(
+    () => warehouseData?.payload || [],
+    [warehouseData]
+  );
   const admins = useMemo(() => adminData?.payload || [], [adminData]);
 
   const [isEditing, setEditing] = useState<Admins | undefined>();
 
-  console.log({ isEditing });
+  console.log({ isEditing, warehouses });
 
   return (
     <div className="content">
@@ -36,17 +51,17 @@ export const AdminRoleDrawer: React.FC<{
 
       <Formik
         initialValues={
-          isEditing ?
-            {
-              ...isEditing,
-              warehouseId: isEditing.warehouse.id as string,
-            } :
-            {
-              fullName: '',
-              email: '',
-              warehouseId: '',
-              password: '',
-            }
+          isEditing
+            ? {
+                ...isEditing,
+                warehouseId: isEditing.warehouse.id as string,
+              }
+            : {
+                fullName: '',
+                email: '',
+                warehouseId: '',
+                password: '',
+              }
         }
         enableReinitialize
         validationSchema={UpdateAdminSchema}
@@ -61,14 +76,18 @@ export const AdminRoleDrawer: React.FC<{
               <div className="main">
                 <TextInput name="fullName" placeholder="Full Name" />
                 <TextInput name="email" placeholder="Email Address" />
-                {warehouses.length ? (
+                {warehouses?.length ? (
                   <SelectInput
                     name="warehouseId"
                     options={warehouses}
                     valueProp="state"
                     displayProp="address"
                     placeholder={
-                      isEditing ? isEditing.warehouse.address + ',' + isEditing.warehouse.state : 'Assigned Warehouse'
+                      isEditing
+                        ? isEditing.warehouse.address +
+                          ',' +
+                          isEditing.warehouse.state
+                        : 'Assigned Warehouse'
                     }
                   />
                 ) : null}
@@ -76,7 +95,11 @@ export const AdminRoleDrawer: React.FC<{
 
               <div className="footer mt-4">
                 <div>
-                  <button type="submit" disabled={!isValid} className="submit__btn">
+                  <button
+                    type="submit"
+                    disabled={!isValid}
+                    className="submit__btn"
+                  >
                     {isSubmitting ? <LoaderComponent /> : 'Update'}
                   </button>
                 </div>
