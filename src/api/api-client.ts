@@ -125,9 +125,9 @@ export class ApiClient {
         (request.body as any).finalize();
       }
 
-      requestContent.body = isFormData
-        ? (request.body as unknown as FormData)
-        : JSON.stringify(request.body);
+      requestContent.body = isFormData ?
+        (request.body as unknown as FormData) :
+        JSON.stringify(request.body);
     }
 
     try {

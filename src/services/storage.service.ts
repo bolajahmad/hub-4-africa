@@ -47,9 +47,9 @@ export class StorageService {
   }
 
   public static removeFromLocal(key: StorageEnums | StorageEnums[]): void {
-    Array.isArray(key)
-      ? key.forEach((cache) => localStorage.removeItem(cache))
-      : localStorage.removeItem(key);
+    Array.isArray(key) ?
+      key.forEach((cache) => localStorage.removeItem(cache)) :
+      localStorage.removeItem(key);
   }
 
   public static getFromSession<ResponseType>(
@@ -74,8 +74,8 @@ export class StorageService {
   }
 
   public static removeFromSession(key: StorageEnums | StorageEnums[]): void {
-    Array.isArray(key)
-      ? key.forEach((cache) => sessionStorage.removeItem(cache))
-      : sessionStorage.removeItem(key);
+    Array.isArray(key) ?
+      key.forEach((cache) => sessionStorage.removeItem(cache)) :
+      sessionStorage.removeItem(key);
   }
 }

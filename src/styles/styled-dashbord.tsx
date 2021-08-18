@@ -50,10 +50,10 @@ export const StyledProgressWrapper = styled(motion.div)<{
     color: ${({ color = '#F33B3B' }) => color};
     border: 5px solid;
     border-color: ${({ ratio = 0.1 }) =>
-      `${0 <= ratio ? 'currentColor' : '#f3f3f3'} ${
-        ratio > 0.25 ? 'currentColor' : '#f3f3f3'
-      } ${ratio > 0.5 ? 'currentColor' : '#f3f3f3'} ${
-        ratio > 0.75 ? 'currentColor' : '#f3f3f3'
-      }`};
+    `${0 <= ratio ? 'currentColor' : '#f3f3f3'} ${
+      ratio > 0.25 ? 'currentColor' : '#f3f3f3'
+    } ${ratio > 0.5 ? 'currentColor' : '#f3f3f3'} ${
+      ratio > 0.75 ? 'currentColor' : '#f3f3f3'
+    }`};
   }
 `;

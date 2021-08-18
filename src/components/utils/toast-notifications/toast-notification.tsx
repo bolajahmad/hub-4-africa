@@ -92,35 +92,35 @@ export const ToastNotification: React.FC<Notification> = ({
   }, [id]);
 
   const timeoutDuration =
-    type === NotificationType.ERROR
-      ? NOTIFICATION_TIMEOUT * 2
-      : NOTIFICATION_TIMEOUT;
+    type === NotificationType.ERROR ?
+      NOTIFICATION_TIMEOUT * 2 :
+      NOTIFICATION_TIMEOUT;
 
   const state = React.useMemo(() => {
     switch (type) {
-      case NotificationType.SUCCESS:
-        return 'success';
-      case NotificationType.INFO:
-        return 'info';
-      case NotificationType.ERROR:
-        return 'error';
-      case NotificationType.WARNING:
-        return 'warning';
+    case NotificationType.SUCCESS:
+      return 'success';
+    case NotificationType.INFO:
+      return 'info';
+    case NotificationType.ERROR:
+      return 'error';
+    case NotificationType.WARNING:
+      return 'warning';
     }
   }, [type]);
 
   const Icon = React.useMemo(() => {
     switch (type) {
-      case NotificationType.SUCCESS:
-        return FiCheck;
-      case NotificationType.INFO:
-        return FiInfo;
-      case NotificationType.ERROR:
-        return FiX;
-      case NotificationType.WARNING:
-        return FiTriangle;
-      default:
-        return FiCheck;
+    case NotificationType.SUCCESS:
+      return FiCheck;
+    case NotificationType.INFO:
+      return FiInfo;
+    case NotificationType.ERROR:
+      return FiX;
+    case NotificationType.WARNING:
+      return FiTriangle;
+    default:
+      return FiCheck;
     }
   }, [type]);
 

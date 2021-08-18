@@ -86,9 +86,9 @@ export const SelectInput = function <T extends Option>({
           {placeholder && (
             <option
               value={
-                arrayOfValidOptions.includes(meta.initialValue)
-                  ? 'AN_INVALID_FIELD_PLACEHOLDER'
-                  : meta.initialValue ?? ''
+                arrayOfValidOptions.includes(meta.initialValue) ?
+                  'AN_INVALID_FIELD_PLACEHOLDER' :
+                  meta.initialValue ?? ''
               }
               disabled
             >
