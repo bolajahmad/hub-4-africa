@@ -14,7 +14,7 @@ export const dashboardStats: OrderStatsModel[] = [
     name: 'Pending Orders',
     id: 'pending',
     value: 0,
-    link: '/app/orders/all',
+    link: '/orders/all',
     color: 'rgba(255, 208, 57, 0.1)',
     icon: ArrowDownSquare,
   },
@@ -87,14 +87,7 @@ export interface DashboardStatsProps extends OrderStatsModel {
   isLoading?: boolean;
 }
 
-export const StatsBox: React.FC<DashboardStatsProps> = ({
-  name,
-  value,
-  color,
-  icon,
-  isLoading,
-  link,
-}) => {
+export const StatsBox: React.FC<DashboardStatsProps> = ({ name, value, color, icon, isLoading, link }) => {
   const history = useHistory();
 
   return (
