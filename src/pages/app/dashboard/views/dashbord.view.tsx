@@ -1,25 +1,31 @@
 import React, { useMemo } from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 import { PrimaryTable } from '../../../../components';
 import { CopyCard, CustomDropdown, CustomDropdownItem, LoaderComponent } from '../../../../components/utils';
+import { useNotificationContext } from '../../../../contexts/NotificationContext';
 import { OrdersModel, OrderStatsModel, OrderStatsType } from '../../../../models';
-import { UtilService } from '../../../../services';
+import { OrdersService, UtilService } from '../../../../services';
 import { DashboardService } from '../../../../services/dashboard.service';
 import { StyledDashboard, StyledProgressWrapper } from '../../../../styles';
-import { useWindowDimensions } from '../../../../utils';
+import { NotificationType, OrderStatuses, useWindowDimensions } from '../../../../utils';
 import { dashboardStats, StatsBox } from '../components/stats-box';
 
 const Wrapper = styled(StyledDashboard)``;
 
 export const DashboardView: React.FC = () => {
+  const { addNotification } = useNotificationContext()!;
   const { width } = useWindowDimensions();
 
   const { data: statsData, isLoading: loadingStats } = useQuery(['order-stats'], DashboardService.fetchOrderStats);
   const { data: statusData } = useQuery(['order-status'], UtilService.fetchOrderStatus);
   const { data: ordersData, isLoading } = useQuery(['orders'], DashboardService.fetchAllOrders);
-
+  const { mutate } = useMutation(OrdersService.updateOrderStatus, {
+    onError: (error) => {
+      addNotification(NotificationType.ERROR, (error as any)?.message);
+    },
+  });
   const stats = useMemo(() => {
     if (statsData && statsData.payload) {
       const actualData = Object.keys(statsData.payload).map((key) => {
@@ -37,7 +43,7 @@ export const DashboardView: React.FC = () => {
     }
   }, [statsData]);
   const orders = useMemo(() => (ordersData?.payload ?? []) as OrdersModel[], [ordersData]);
-  const status = useMemo(() => (statusData?.payload ?? []) as { id: string; name: string }[], [statusData]);
+  const status = useMemo(() => (statusData?.payload ?? []) as { id: number; name: string }[], [statusData]);
 
   return (
     <Wrapper width={width}>
@@ -63,7 +69,7 @@ export const DashboardView: React.FC = () => {
                 Header: 'Tracking NO.',
                 accessor: ({ id }: OrdersModel) => (
                   <React.Fragment>
-                    <CopyCard data-tip={id} data-for={id} title={id} text="Copy Number" />
+                    <CopyCard data-tip={id} data-for={id} title={id} hoveredText={id} text="Copy Number" />
                     <ReactTooltip id={id} className="tooltip" place="bottom">
                       <p
                         style={{
@@ -98,11 +104,19 @@ export const DashboardView: React.FC = () => {
               },
               {
                 Header: 'Update Status',
-                accessor: () => (
-                  <CustomDropdown triggerComponent={() => <span>In Progress</span>}>
+                accessor: ({ orderStatus, id: orderId }: OrdersModel) => (
+                  <CustomDropdown
+                    triggerComponent={() => (
+                      <span>{OrderStatuses.find(({ id: status }) => status === orderStatus)?.display}</span>
+                    )}
+                  >
                     {status.map(({ name, id }) => (
-                      <CustomDropdownItem className="capitalize" key={id}>
-                        {name.split('_').join(' ')}
+                      <CustomDropdownItem
+                        onClick={() => mutate({ orderStatus: id, orderId })}
+                        className="capitalize"
+                        key={id}
+                      >
+                        {OrderStatuses.find(({ name: orderName }) => name === orderName)?.display}
                       </CustomDropdownItem>
                     ))}
                   </CustomDropdown>

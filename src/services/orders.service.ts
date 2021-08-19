@@ -11,7 +11,7 @@ export class OrdersService {
   }
 
   public static trackOrder(id: string) {
-    return ApiClient.get<OrdersModel>(`admin/${id}`);
+    return ApiClient.get<OrdersModel>(`admin/order/${id}`);
   }
 
   public static orderEstimate(model: { weight: number; orderId: string }) {
@@ -19,5 +19,9 @@ export class OrdersService {
       { weight: number; orderId: string },
       { estimatedPrice: number }
     >('admin/update-order-price', model);
+  }
+
+  public static updateOrderStatus(model: { orderStatus: number, orderId: string }) {
+    return ApiClient.patch<{ orderStatus: number, orderId: string }>('admin/update-order-status', model);
   }
 }

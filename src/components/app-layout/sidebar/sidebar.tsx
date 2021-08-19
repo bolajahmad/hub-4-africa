@@ -173,7 +173,7 @@ interface SidebarLink {
 }
 
 const links: SidebarLink[] = [
-  { name: 'Dashboard', path: '/app/dashboard', icon: MdDashboard },
+  { name: 'Dashboard', path: '/dashboard', icon: MdDashboard },
   {
     name: 'Orders',
     path: '/orders',

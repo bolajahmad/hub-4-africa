@@ -28,8 +28,8 @@ const PageWrapper = styled(StyledDashboard)`
 
     .order-icon {
       display: inline-flex;
-      width: 6em;
-      height: 5em;
+      width: 100px;
+      height: 75px;
       align-items: center;
       justify-content: center;
       background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 34.67%, rgba(249, 249, 249, 0.2) 65.33%);
