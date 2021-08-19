@@ -25,9 +25,9 @@ function App() {
             <Route path="/login" component={LoginPage} />
             <Route path="/forgot-password" component={ForgotPasswordPage} />
 
-            <Route path="/app/dashboard" component={Dashboard} />
-            <Route path="/app/orders" component={OrdersPage} />
-            <Route path="/app/settings" component={SettingsPage} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/orders" component={OrdersPage} />
+            <Route path="/settings" component={SettingsPage} />
 
             <Redirect to="/" />
           </Switch>

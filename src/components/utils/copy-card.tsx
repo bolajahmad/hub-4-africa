@@ -12,19 +12,22 @@ const WrapperStyle = styled.div`
   font-style: italic;
 
   .text__btn {
-    background-color: #4cf8b9;
+    background-color: #0ebe7e;
     color: white;
     border-radius: 5px;
     border: none;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .copy {
     justify-content: center;
 
-    span {
+    .text {
       color: inherit;
-      font-weight: 600;
+    }
+
+    .hovered {
+      max-width: 10em;
     }
   }
 `;
@@ -32,10 +35,12 @@ const WrapperStyle = styled.div`
 interface Props {
   title: string;
   text?: React.ReactNode;
+  hoveredText?: string;
 }
 
-export const CopyCard: React.FC<Props> = ({ title, text }) => {
+export const CopyCard: React.FC<Props> = ({ title, text, hoveredText }) => {
   const [copied, setCopied] = useState(false);
+  const [showHovered, setShowHovered] = useState(false);
   const onCopy = React.useCallback(() => {
     setCopied(true);
   }, []);
@@ -46,7 +51,7 @@ export const CopyCard: React.FC<Props> = ({ title, text }) => {
       timeout && clearTimeout(timeout);
       timeout = setTimeout(() => {
         setCopied(false);
-      }, 2000);
+      }, 3000);
     }
     return () => timeout && clearTimeout(timeout);
   }, [copied]);
@@ -54,8 +59,21 @@ export const CopyCard: React.FC<Props> = ({ title, text }) => {
   return (
     <WrapperStyle>
       <CopyToClipboard text={title} onCopy={onCopy}>
-        <TextButton className={`text__btn copy${copied ? 'copied' : ''}`}>
-          <span>{copied ? 'Copied' : text || 'Copy Key'}</span>
+        <TextButton
+          onClick={() => {
+            if (hoveredText) {
+              setShowHovered((prev) => !prev);
+              setTimeout(() => {
+                setShowHovered(false);
+              }, 2000);
+            }
+          }}
+          className={`text__btn copy ${copied ? 'copied' : ''}`}
+        >
+          <span className={`text ${showHovered ? 'visually-hidden' : ''}`}>
+            {copied ? 'Copied' : text || 'Copy Key'}
+          </span>
+          <span className={`hovered ${showHovered ? '' : 'visually-hidden'}`}>{hoveredText}</span>
         </TextButton>
       </CopyToClipboard>
     </WrapperStyle>

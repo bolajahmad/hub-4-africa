@@ -1,10 +1,9 @@
 import { useFormik } from 'formik';
 import { motion } from 'framer-motion';
-import moment from 'moment';
 import React from 'react';
-import { FiSend } from 'react-icons/fi';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
+import LocationIcon from '../../../../assets/images/location.svg';
 import { LoaderComponent } from '../../../../components/utils';
 import { useNotificationContext } from '../../../../contexts/NotificationContext';
 import { OrdersService } from '../../../../services';
@@ -35,48 +34,29 @@ const PageWrapper = styled(motion.div)`
       .info__list {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        gap: 20px;
         justify-content: stretch;
 
-        .item {
+        .text {
+          flex: 1;
+          font-weight: 400;
+          font-size: 0.85rem;
+          opacity: 0.2;
+          text-align: center;
           display: flex;
-          align-items: center;
+          flex-direction: column;
           justify-content: center;
-          gap: 15px;
-          width: 100%;
-          color: #020003;
+          align-items: center;
 
-          .icon {
-            width: 3.5em;
-            height: 3.5em;
-            border-radius: 8px;
-            padding: 0.5em;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            background-color: #0ebe7e;
-
-            &.faded {
-              background-color: #e7f8f2;
-              color: #0ebe7e;
-            }
+          span {
+            display: block;
           }
+        }
 
-          .text {
-            flex: 1;
-            font-weight: 400;
-            font-size: 0.8rem;
-
-            .bold {
-              font-weight: 700;
-              font-size: 0.95em;
-            }
-          }
-
-          .time {
-            opacity: 0.2;
-          }
+        .icon {
+          width: 10em;
+          height: 7em;
         }
       }
 
@@ -96,9 +76,8 @@ const PageWrapper = styled(motion.div)`
 export const TrackOrdersView: React.FC = () => {
   const { width } = useWindowDimensions();
   const { addNotification } = useNotificationContext()!;
-  const { mutate, isLoading, data } = useMutation(OrdersService.trackOrder, {
-    onSuccess: ({ message }) =>
-      addNotification(NotificationType.SUCCESS, message, true),
+  const { mutate, isLoading, data, isError, error } = useMutation(OrdersService.trackOrder, {
+    onSuccess: ({ message }) => addNotification(NotificationType.SUCCESS, message, true),
   });
   const { values, handleChange, handleBlur } = useFormik({
     initialValues: { orderId: '' },
@@ -128,28 +107,28 @@ export const TrackOrdersView: React.FC = () => {
                 placeholder="Paste order id"
               />
             </div>
-            {/* {isError && (
+            {isError && (
               <span className="error-message centered mt-4 bold-6">
                 {(error as any)?.message}: {(error as any)?.payload}
               </span>
-            )} */}
+            )}
           </StyledInputWrapper>
 
-          {data && (
-            <ul className="info__list">
-              <li className="item">
-                <span className="icon">
-                  <FiSend size={24} />
-                </span>
+          {data?.payload && (
+            <div className="info__list">
+              <div className="icon">
+                <img src={LocationIcon} alt="location" />
+              </div>
 
-                <div className="text">
-                  <p className="bold">New Orleans Warehouse</p>
-                  <p>312, texas malbrocks united state</p>
-                </div>
+              <h4 className="text">
+                <span>Customer Shipment is</span>
+                <span>currently at</span>
+              </h4>
 
-                <span className="time">{moment().format('HH:mm')}</span>
-              </li>
-            </ul>
+              <h3>
+                {data.payload.warehouse.state}&nbsp;{data.payload.warehouse.address}
+              </h3>
+            </div>
           )}
 
           <StyledFormWrapper width={width}>
@@ -161,11 +140,7 @@ export const TrackOrdersView: React.FC = () => {
                   marginRight: 'auto',
                 }}
               >
-                <button
-                  type="button"
-                  onClick={() => handleSubmit()}
-                  className="submit__btn"
-                >
+                <button type="button" onClick={() => handleSubmit()} className="submit__btn">
                   {isLoading ? <LoaderComponent /> : 'Track'}
                 </button>
               </div>

@@ -7,9 +7,8 @@ import { ToastNotification } from './toast-notification';
 const Container = styled.div`
   position: fixed;
   bottom: 0;
-  top: 0;
   z-index: 1081;
-  width: 100vw;
+  width: 80vw;
   padding: 10px;
   pointer-events: none;
 
@@ -25,9 +24,7 @@ export const ToastNotificationArea: React.FC = () => {
     <Container>
       <AnimatePresence>
         {notifications &&
-          notifications.map((notification) => (
-            <ToastNotification key={notification.id} {...notification} />
-          ))}
+          notifications.map((notification) => <ToastNotification key={notification.id} {...notification} />)}
       </AnimatePresence>
     </Container>
   );

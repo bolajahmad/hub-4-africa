@@ -18,7 +18,7 @@ const Container = styled(motion.div)`
   width: 100%;
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 8px;
-  background-color: white;
+  background-color: rgb(63, 63, 63);
   position: relative;
   pointer-events: auto;
 
@@ -32,33 +32,34 @@ const Container = styled(motion.div)`
   }
 
   .toast__icon {
-    color: white;
-    width: 30px;
-    height: 30px;
+    color: #dbdbdb;
+    width: 40px;
+    height: 40px;
   }
 
   .toast__dismiss-button {
     border: none;
     outline: none;
-    height: 25px;
-    width: 25px;
-    color: #888888;
-    background-color: white;
-    transition: background-color 400ms;
+    height: 30px;
+    width: 30px;
+    color: #d8d8d8;
+    background-color: transparent;
+    transition: background-color 400ms, color 400ms;
 
     :hover {
-      background-color: rgba(0, 0, 0, 0.2);
-      color: black;
+      background-color: rgba(238, 238, 238, 0.6);
+      color: #383838;
     }
   }
 
   .toast__header {
-    font-size: 14px;
+    font-size: 17px;
+    color: #fff;
   }
 
   .toast__message {
-    font-size: 12px;
-    color: #888888;
+    font-size: 15px;
+    color: #eedaea;
   }
 
   .success {
@@ -80,21 +81,13 @@ const Container = styled(motion.div)`
 
 const NOTIFICATION_TIMEOUT = 3 * 1000; // 5 Seconds
 
-export const ToastNotification: React.FC<Notification> = ({
-  id,
-  type,
-  message,
-  sticky,
-}) => {
+export const ToastNotification: React.FC<Notification> = ({ id, type, message, sticky }) => {
   const { removeNotification } = useNotificationContext()!;
   const dismissNotification = React.useCallback(() => {
     removeNotification(id);
   }, [id]);
 
-  const timeoutDuration =
-    type === NotificationType.ERROR ?
-      NOTIFICATION_TIMEOUT * 2 :
-      NOTIFICATION_TIMEOUT;
+  const timeoutDuration = type === NotificationType.ERROR ? NOTIFICATION_TIMEOUT * 2 : NOTIFICATION_TIMEOUT;
 
   const state = React.useMemo(() => {
     switch (type) {
@@ -147,16 +140,11 @@ export const ToastNotification: React.FC<Notification> = ({
   );
 
   return (
-    <Container
-      className="overflow-hidden flex items-center"
-      {...animationProps}
-    >
+    <Container className="overflow-hidden flex items-center" {...animationProps}>
       <div className={`toast__indicator flex-grow-0 flex-shrink-0 ${state}`} />
       <div className="flex justify-between items-center px-3 py-4 flex-grow">
         <div className="flex">
-          <div
-            className={`toast__icon centered rounded-full flex-shrink-0 ${state}`}
-          >
+          <div className={`toast__icon centered rounded-full flex-shrink-0 ${state}`}>
             <Icon size={16} strokeWidth={3} />
           </div>
           <div className="toast__content ml-2">
@@ -168,10 +156,7 @@ export const ToastNotification: React.FC<Notification> = ({
             ))}
           </div>
         </div>
-        <button
-          className="toast__dismiss-button flex-shrink-0 rounded-full p-0 centered"
-          onClick={dismissNotification}
-        >
+        <button className="toast__dismiss-button flex-shrink-0 rounded-full p-0 centered" onClick={dismissNotification}>
           <FiX size={18} strokeWidth={2} />
         </button>
       </div>

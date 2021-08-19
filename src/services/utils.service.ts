@@ -2,7 +2,7 @@ import { ApiClient } from '../api';
 import {
   CreateWarehouse,
   PackageConditionsModel,
-  WarehouseModel,
+  WarehouseModel
 } from '../models';
 
 export class UtilService {
@@ -28,7 +28,7 @@ export class UtilService {
   }
 
   public static fetchOrderStatus() {
-    return ApiClient.get<{ id: string; name: string }[]>(
+    return ApiClient.get<{ id: number; name: string }[]>(
       'admin/order-statuses'
     );
   }
