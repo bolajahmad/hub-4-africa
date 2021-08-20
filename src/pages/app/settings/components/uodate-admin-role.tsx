@@ -1,43 +1,24 @@
 import { Formik } from 'formik';
 import React, { useMemo, useState } from 'react';
 import { FiX } from 'react-icons/fi';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { MdEdit } from 'react-icons/md';
 import { useMutation, useQuery } from 'react-query';
 import { SelectInput, TextButton, TextInput } from '../../../../components';
 import { LoaderComponent } from '../../../../components/utils';
 import { Admins } from '../../../../models/admins';
 import { DashboardService, UtilService } from '../../../../services';
 import { StyledFormWrapper } from '../../../../styles';
-import {
-  generateID,
-  UpdateAdminSchema,
-  useWindowDimensions,
-} from '../../../../utils';
+import { generateID, UpdateAdminSchema } from '../../../../utils';
 
 export const AdminRoleDrawer: React.FC<{
   closeDrawer: () => void;
 }> = ({ closeDrawer }) => {
-  const { width } = useWindowDimensions();
-  const { mutate: createAdmin, isLoading: isSubmitting } = useMutation(
-    DashboardService.createAdmin
-  );
-  const { data: adminData, isLoading } = useQuery(
-    ['admins'],
-    DashboardService.getAdmins
-  );
-  const { data: warehouseData } = useQuery(
-    ['warehouses'],
-    UtilService.fetchWarehouse
-  );
-  const warehouses = useMemo(
-    () => warehouseData?.payload || [],
-    [warehouseData]
-  );
+  const { mutate: createAdmin, isLoading: isSubmitting } = useMutation(DashboardService.createAdmin);
+  const { data: adminData, isLoading } = useQuery(['admins'], DashboardService.getAdmins);
+  const { data: warehouseData } = useQuery(['warehouses'], UtilService.fetchWarehouse);
+  const warehouses = useMemo(() => warehouseData?.payload || [], [warehouseData]);
   const admins = useMemo(() => adminData?.payload || [], [adminData]);
-
   const [isEditing, setEditing] = useState<Admins | undefined>();
-
-  console.log({ isEditing, warehouses });
 
   return (
     <div className="content">
@@ -72,7 +53,7 @@ export const AdminRoleDrawer: React.FC<{
       >
         {({ handleSubmit, isValid }) => {
           return (
-            <StyledFormWrapper width={width} smaller onSubmit={handleSubmit}>
+            <StyledFormWrapper smaller onSubmit={handleSubmit}>
               <div className="main">
                 <TextInput name="fullName" placeholder="Full Name" />
                 <TextInput name="email" placeholder="Email Address" />
@@ -83,11 +64,7 @@ export const AdminRoleDrawer: React.FC<{
                     valueProp="state"
                     displayProp="address"
                     placeholder={
-                      isEditing ?
-                        isEditing.warehouse.address +
-                          ',' +
-                          isEditing.warehouse.state :
-                        'Assigned Warehouse'
+                      isEditing ? isEditing.warehouse.address + ',' + isEditing.warehouse.state : 'Assigned Warehouse'
                     }
                   />
                 ) : null}
@@ -95,11 +72,7 @@ export const AdminRoleDrawer: React.FC<{
 
               <div className="footer mt-4">
                 <div>
-                  <button
-                    type="submit"
-                    disabled={!isValid}
-                    className="submit__btn"
-                  >
+                  <button type="submit" disabled={!isValid} className="submit__btn">
                     {isSubmitting ? <LoaderComponent /> : 'Update'}
                   </button>
                 </div>
@@ -125,9 +98,9 @@ export const AdminRoleDrawer: React.FC<{
                   <TextButton onClick={() => setEditing(admin)}>
                     <MdEdit size="14" color="#1DC286" />
                   </TextButton>
-                  <TextButton>
+                  {/* <TextButton>
                     <MdDelete size="14" color="#e02e2e" />
-                  </TextButton>
+                  </TextButton> */}
                 </div>
               </li>
             ))}

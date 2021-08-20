@@ -3,12 +3,12 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
-import LocationIcon from '../../../../assets/images/location.svg';
 import { LoaderComponent } from '../../../../components/utils';
 import { useNotificationContext } from '../../../../contexts/NotificationContext';
 import { OrdersService } from '../../../../services';
 import { StyledFormWrapper, StyledInputWrapper } from '../../../../styles';
-import { NotificationType, useWindowDimensions } from '../../../../utils';
+import { NotificationType } from '../../../../utils';
+import LocationIcon from './locations.png';
 
 const PageWrapper = styled(motion.div)`
   width: 100%;
@@ -39,6 +39,7 @@ const PageWrapper = styled(motion.div)`
         justify-content: stretch;
 
         .text {
+          transform: translateY(-30px);
           flex: 1;
           font-weight: 400;
           font-size: 0.85rem;
@@ -55,8 +56,7 @@ const PageWrapper = styled(motion.div)`
         }
 
         .icon {
-          width: 10em;
-          height: 7em;
+          width: 15em;
         }
       }
 
@@ -74,7 +74,6 @@ const PageWrapper = styled(motion.div)`
 `;
 
 export const TrackOrdersView: React.FC = () => {
-  const { width } = useWindowDimensions();
   const { addNotification } = useNotificationContext()!;
   const { mutate, isLoading, data, isError, error } = useMutation(OrdersService.trackOrder, {
     onSuccess: ({ message }) => addNotification(NotificationType.SUCCESS, message, true),
@@ -95,7 +94,7 @@ export const TrackOrdersView: React.FC = () => {
         </div>
 
         <div className="track-form">
-          <StyledInputWrapper width={width}>
+          <StyledInputWrapper>
             <div className="body">
               <input
                 name="orderId"
@@ -125,13 +124,13 @@ export const TrackOrdersView: React.FC = () => {
                 <span>currently at</span>
               </h4>
 
-              <h3>
+              <h3 style={{ transform: 'translateY(-30px)' }}>
                 {data.payload.warehouse.state}&nbsp;{data.payload.warehouse.address}
               </h3>
             </div>
           )}
 
-          <StyledFormWrapper width={width}>
+          <StyledFormWrapper>
             <div className="footer">
               <div
                 style={{

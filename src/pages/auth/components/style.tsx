@@ -1,8 +1,7 @@
 import styled from 'styled-components';
+import { devices } from '../../../utils';
 
-export const AuthPageWrapper = styled.div<{
-  width: number;
-}>`
+export const AuthPageWrapper = styled.div`
   width: 100%;
   font-size: 1rem;
   background-color: #f2f2f2;
@@ -18,5 +17,12 @@ export const AuthPageWrapper = styled.div<{
     max-width: 30em;
     margin: 0 auto;
     height: 100%;
+  }
+
+  ${devices.phone} {
+    > .container {
+      padding: 0em 2em;
+      max-width: initial;
+    }
   }
 `;

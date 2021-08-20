@@ -16,6 +16,7 @@ const Wrapper = styled.div`
     justify-content: center;
     gap: 10px;
     border: none;
+    width: 100%;
     min-width: fit-content;
     padding: 0.5em 1em;
     font-weight: 500;

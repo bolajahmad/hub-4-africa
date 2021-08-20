@@ -7,7 +7,7 @@ import { useNotificationContext } from '../../../../contexts/NotificationContext
 import { OrdersModel } from '../../../../models';
 import { OrdersService } from '../../../../services';
 import { StyledFormWrapper, StyledInputWrapper } from '../../../../styles';
-import { NotificationType, useWindowDimensions } from '../../../../utils';
+import { NotificationType } from '../../../../utils';
 
 const ModalWrapper = styled.div`
   width: 100%;
@@ -45,7 +45,6 @@ interface Props {
 
 export const PendingOrdersView: React.FC<Props> = ({ orderSelected, setOrder }) => {
   const { addNotification } = useNotificationContext()!;
-  const { width } = useWindowDimensions();
   const { mutate, isLoading, isError, error } = useMutation(OrdersService.orderEstimate, {
     onSuccess: (response) => {
       setOrder(undefined);
@@ -73,7 +72,7 @@ export const PendingOrdersView: React.FC<Props> = ({ orderSelected, setOrder }) 
       <ModalWrapper>
         <h3 className="header">Enter Total Goods Weight</h3>
 
-        <StyledInputWrapper width={width}>
+        <StyledInputWrapper>
           <div className="body">
             <input
               type="number"
@@ -100,7 +99,7 @@ export const PendingOrdersView: React.FC<Props> = ({ orderSelected, setOrder }) 
           <span style={{ opacity: 0.6, fontWeight: 400 }}>Package Conditions</span>
           <span>
             {orderSelected.packageConditions.map(({ packageConditionName }) => packageConditionName).join(', ') ??
-                'Not Specified'}
+              'Not Specified'}
           </span>
         </div>
         <div className="list">
@@ -114,7 +113,7 @@ export const PendingOrdersView: React.FC<Props> = ({ orderSelected, setOrder }) 
           <span>{orderSelected.packageSize}kg</span>
         </div>
 
-        <StyledFormWrapper width={width}>
+        <StyledFormWrapper>
           <div className="footer">
             <div
               style={{

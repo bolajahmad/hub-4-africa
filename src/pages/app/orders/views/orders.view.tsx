@@ -8,7 +8,7 @@ import OrderCardIcon from '../../../../assets/images/order-card.icon.svg';
 import ProductRelease from '../../../../assets/images/product-release.svg';
 import ShippingIcon from '../../../../assets/images/shipping-icon.svg';
 import { StyledDashboard } from '../../../../styles';
-import { useWindowDimensions } from '../../../../utils';
+import { devices } from '../../../../utils';
 
 const PageWrapper = styled(StyledDashboard)`
   width: 100%;
@@ -95,6 +95,18 @@ const PageWrapper = styled(StyledDashboard)`
       font-size: 0.75em;
     }
   }
+
+  ${devices.phoneM} {
+    .order-card {
+      width: 100%;
+      max-width: 100%;
+      min-width: 100%;
+
+      .order-icon {
+        display: none;
+      }
+    }
+  }
 `;
 
 interface ContentProps {
@@ -126,12 +138,10 @@ const OrderNavContent: ContentProps[] = [
 ];
 
 export const OrdersView: React.FC = () => {
-  const { width } = useWindowDimensions();
-
   const history = useHistory();
 
   return (
-    <PageWrapper width={width}>
+    <PageWrapper>
       <div className="order-card">
         <div className="order-icon">
           <img src={OrderCardIcon} alt="" />

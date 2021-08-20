@@ -1,44 +1,19 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { MdNotifications } from 'react-icons/md';
-import { Link, Redirect } from 'react-router-dom';
-import styled from 'styled-components';
+import { RiMenu4Line } from 'react-icons/ri';
+import { Redirect } from 'react-router-dom';
+import Logo from '../../../assets/images/logo-mini.svg';
 import { useAuthContext } from '../../../contexts/AuthContext';
-
-const Wrapper = styled.div`
-  margin-bottom: 30px;
-  background-color: white;
-  padding: 1em 1.5em;
-  padding-right: 2.5em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  .user__area {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    .notification-icon {
-      color: #939bbd;
-      height: 25px;
-      width: 25px;
-    }
-  }
-`;
-
-const UserIcon = styled(Link)`
-  background: #f0f2f7;
-  border: 1px solid #f0f2f7;
-  height: 40px;
-  width: 40px;
-  border-radius: 100%;
-`;
+import { TextButton } from '../../buttons';
+import { HeaderStyleWrapper } from './styles';
 
 interface Props {
+  sidebarOpen?: boolean;
+  setSidebarOpen?: Dispatch<SetStateAction<boolean>>;
   barComponent?: React.ReactNode;
 }
 
-export const HeaderBar: React.FC<Props> = () => {
+export const HeaderBar: React.FC<Props> = ({ sidebarOpen, setSidebarOpen }) => {
   const { account } = useAuthContext()!;
 
   if (!account) {
@@ -46,13 +21,20 @@ export const HeaderBar: React.FC<Props> = () => {
   }
 
   return (
-    <Wrapper className="d-flex justify-content-between">
-      <div className="bold-8">{account.userName}</div>
+    <HeaderStyleWrapper sidebarOpen={sidebarOpen} className="d-flex justify-content-between">
+      <div className="header-title">
+        <span className="logo">
+          <img src={Logo} alt="logo" />
+        </span>
+        <span>{account.warehouse.state} Warehouse</span>
+      </div>
       <div className="user__area">
         <MdNotifications className="notification-icon" />
-        <UserIcon to="/app/profile" />
         <span className="bold-6">Hi {account.fullName.split(' ')[0]}!</span>
+        <TextButton className="menu" onClick={() => setSidebarOpen?.((prev) => !prev)}>
+          <RiMenu4Line size="18" />
+        </TextButton>
       </div>
-    </Wrapper>
+    </HeaderStyleWrapper>
   );
 };

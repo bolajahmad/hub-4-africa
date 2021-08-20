@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const StyledFormWrapper = styled.form<{
-  width: number;
   smaller?: boolean;
 }>`
   width: 100%;
@@ -36,8 +35,7 @@ export const StyledFormWrapper = styled.form<{
       color: white;
       transform: translateY(0);
       filter: none;
-      transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-        filter 0.5s ease-in;
+      transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1), filter 0.5s ease-in;
       will-change: transform, filter;
 
       &:focus,

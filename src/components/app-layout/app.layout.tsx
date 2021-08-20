@@ -1,15 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import styled from 'styled-components';
-import { getWindowDimensions, useWindowDimensions } from '../../utils';
+import { devices, getWindowDimensions, useWindowDimensions } from '../../utils';
 import { HeaderBar } from './header-bar';
 import { Sidebar } from './sidebar';
 
-const Wrapper = styled.div<{
-  width: number;
-}>`
-  display: ${({ width }) => (width <= 768 ? 'flex' : 'grid')};
-  ${({ width }) => width <= 768 && 'flex-direction: column'};
+const Wrapper = styled.div`
+  display: grid;
   grid-template-columns: 250px 1fr;
   background-color: #f2f2f2;
 
@@ -22,6 +19,11 @@ const Wrapper = styled.div<{
   .page__body {
     flex: 1;
   }
+
+  ${devices.tablet} {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 interface Props {
@@ -30,17 +32,22 @@ interface Props {
 
 export const AppLayout: React.FC<Props> = ({ children }) => {
   const { width } = useWindowDimensions();
+  const [isOpen, setOpen] = useState(true);
   const isMobile = useMemo(() => width <= 768, [width]);
 
+  useEffect(() => {
+    if (width < 900) {
+      setOpen(false);
+    }
+  }, []);
+
   return (
-    <Wrapper width={width}>
-      <Sidebar isMobile={isMobile} />
+    <Wrapper>
+      <Sidebar sidebarOpen={isOpen} isMobile={isMobile} />
       <main>
-        <HeaderBar />
+        <HeaderBar setSidebarOpen={setOpen} sidebarOpen={isOpen} />
         <div className="page__body">
-          <Scrollbars style={{ height: '100%', width: '100%' }}>
-            {children}
-          </Scrollbars>
+          <Scrollbars style={{ height: '100%', width: '100%' }}>{children}</Scrollbars>
         </div>
       </main>
     </Wrapper>
@@ -52,7 +59,7 @@ const WidthRestrictor = styled.div<{
   width?: number;
 }>`
   width: 100%;
-  max-width: ${({ width }) => (width && width >= 900 ? '100%' : '480px')};
+  /* max-width: ${({ width }) => (width && width >= 900 ? '100%' : '480px')}; */
   margin-left: ${(props) => (props.shiftRight ? '200px' : 0)};
   margin: ${({ width }) => width && width >= 900 && 0};
 `;

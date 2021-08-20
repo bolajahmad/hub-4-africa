@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import styled from 'styled-components';
-import { useWindowDimensions } from '../../../../utils';
+import { devices, useWindowDimensions } from '../../../../utils';
 import { PackageConditionsDrawer } from './package-conditions';
 import { AdminRoleDrawer } from './uodate-admin-role';
 import { WarehouseDrawer } from './warehouse-drawer';
@@ -33,7 +33,7 @@ const DrawerWrapper = styled(motion.div)<{
     }
 
     > * {
-      padding: 1em 2em;
+      padding: 0em 2em;
     }
 
     .header {
@@ -59,7 +59,7 @@ const DrawerWrapper = styled(motion.div)<{
 
       .list {
         padding: 0 2em;
-        height: 20em;
+        max-height: 10em;
         overflow: auto;
 
         &::-webkit-scrollbar {
@@ -97,6 +97,13 @@ const DrawerWrapper = styled(motion.div)<{
       }
     }
   }
+
+  ${devices.phoneM} {
+    .content {
+      width: 100%;
+      padding: 1em;
+    }
+  }
 `;
 
 interface DrawerProps {
@@ -105,10 +112,7 @@ interface DrawerProps {
   title?: string;
 }
 
-export const SettingsUpdateDrawer: React.FC<DrawerProps> = ({
-  closeDrawer,
-  isUpdating,
-}) => {
+export const SettingsUpdateDrawer: React.FC<DrawerProps> = ({ closeDrawer, isUpdating }) => {
   const { width } = useWindowDimensions();
 
   return (
@@ -120,12 +124,8 @@ export const SettingsUpdateDrawer: React.FC<DrawerProps> = ({
       // transition={{ duration: 0.5 }}
       width={width}
     >
-      {isUpdating === 'warehouse' && (
-        <WarehouseDrawer closeDrawer={closeDrawer} />
-      )}
-      {isUpdating === 'package-condition' && (
-        <PackageConditionsDrawer closeDrawer={closeDrawer} />
-      )}
+      {isUpdating === 'warehouse' && <WarehouseDrawer closeDrawer={closeDrawer} />}
+      {isUpdating === 'package-condition' && <PackageConditionsDrawer closeDrawer={closeDrawer} />}
       {isUpdating === 'role' && <AdminRoleDrawer closeDrawer={closeDrawer} />}
     </DrawerWrapper>
   );

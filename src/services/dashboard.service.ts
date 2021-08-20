@@ -4,7 +4,15 @@ import { Admins } from '../models/admins';
 
 export class DashboardService {
   public static fetchAllOrders() {
-    return ApiClient.get<OrdersModel>('admin/all-shipped-orders');
+    return ApiClient.get<OrdersModel[]>('admin/all-shipped-orders');
+  }
+
+  public static allRejectedOrders() {
+    return ApiClient.get<OrdersModel[]>('admin/all-rejected-orders');
+  }
+
+  public static allCOmpletedOrders() {
+    return ApiClient.get<OrdersModel[]>('admin/all-completed-orders');
   }
 
   public static fetchOrderStats() {

@@ -6,22 +6,16 @@ import { TextInput } from '../../../components';
 import { LoaderComponent } from '../../../components/utils';
 import { AuthService } from '../../../services';
 import { StyledFormWrapper, StyledInputWrapper } from '../../../styles';
-import { ResetPasswordSchema, useWindowDimensions } from '../../../utils';
+import { ResetPasswordSchema } from '../../../utils';
 import { AuthPageWrapper } from '../components';
 
 export const ForgotPasswordPage: React.FC = () => {
-  const { width } = useWindowDimensions();
   const [hasVerifiedEmail, setEmailVerified] = useState(false);
 
-  const { mutate: verifyEmail, isLoading: isVerifying } = useMutation(
-    AuthService.verifyEmail,
-    {
-      onSuccess: () => setEmailVerified(true),
-    }
-  );
-  const { mutate: resetPassword, isLoading: isResetting } = useMutation(
-    AuthService.resetPassword
-  );
+  const { mutate: verifyEmail, isLoading: isVerifying } = useMutation(AuthService.verifyEmail, {
+    onSuccess: () => setEmailVerified(true),
+  });
+  const { mutate: resetPassword, isLoading: isResetting } = useMutation(AuthService.resetPassword);
 
   const {
     handleSubmit,
@@ -39,12 +33,10 @@ export const ForgotPasswordPage: React.FC = () => {
   });
 
   return (
-    <AuthPageWrapper width={width}>
+    <AuthPageWrapper>
       <div className="container">
         <h1 className="bold-8">Welcome Back!</h1>
-        <h4 className="bold-6 mt-3">
-          Continue managing your account. Login as an admin
-        </h4>
+        <h4 className="bold-6 mt-3">Continue managing your account. Login as an admin</h4>
 
         {hasVerifiedEmail ? (
           <Formik
@@ -59,34 +51,16 @@ export const ForgotPasswordPage: React.FC = () => {
           >
             {({ handleSubmit, isValid }) => {
               return (
-                <StyledFormWrapper width={width} onSubmit={handleSubmit}>
+                <StyledFormWrapper onSubmit={handleSubmit}>
                   <div className="main">
-                    <TextInput
-                      name="verificationToken"
-                      white
-                      placeholder="Verification Token"
-                    />
-                    <TextInput
-                      name="password"
-                      white
-                      placeholder="Password"
-                      type="password"
-                    />
-                    <TextInput
-                      name="confirmPassword"
-                      white
-                      placeholder="Password"
-                      type="password"
-                    />
+                    <TextInput name="verificationToken" white placeholder="Verification Token" />
+                    <TextInput name="password" white placeholder="Password" type="password" />
+                    <TextInput name="confirmPassword" white placeholder="Password" type="password" />
                   </div>
 
                   <div className="footer mt-4">
                     <div>
-                      <button
-                        type="submit"
-                        disabled={!isValid}
-                        className="submit__btn"
-                      >
+                      <button type="submit" disabled={!isValid} className="submit__btn">
                         {isResetting ? <LoaderComponent /> : 'Reset Password'}
                       </button>
                     </div>
@@ -96,9 +70,9 @@ export const ForgotPasswordPage: React.FC = () => {
             }}
           </Formik>
         ) : (
-          <StyledFormWrapper width={width} onSubmit={handleSubmit}>
+          <StyledFormWrapper onSubmit={handleSubmit}>
             <div className="main">
-              <StyledInputWrapper width={width}>
+              <StyledInputWrapper>
                 <div className="body">
                   <input
                     type="email"
@@ -114,11 +88,7 @@ export const ForgotPasswordPage: React.FC = () => {
 
             <div className="footer mt-4">
               <div>
-                <button
-                  type="submit"
-                  disabled={!isValid}
-                  className="submit__btn"
-                >
+                <button type="submit" disabled={!isValid} className="submit__btn">
                   {isVerifying ? <LoaderComponent /> : 'Verify Email'}
                 </button>
               </div>
