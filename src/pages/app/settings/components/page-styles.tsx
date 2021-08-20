@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import { devices } from '../../../../utils';
 
-export const SettingsPageWrapper = styled(motion.div)<{
-  width: number;
-}>`
+export const SettingsPageWrapper = styled(motion.div)`
   width: 100%;
-  font-size: ${({ width }) => (width <= 900 ? '0.85rem' : '1rem')};
+  font-size: 1rem;
   padding: 1.5em 2.5em;
   position: relative;
   transition: font-size 0.25 cubic-bezier(0.785, 0.135, 0.15, 0.86);
@@ -31,7 +30,7 @@ export const SettingsPageWrapper = styled(motion.div)<{
 
         .text {
           flex: 1;
-          max-width: ${({ width }) => (width <= 900 ? '100%' : '50%')};
+          max-width: 50%;
           color: #130f26;
 
           h3 {
@@ -42,7 +41,7 @@ export const SettingsPageWrapper = styled(motion.div)<{
           p {
             font-weight: 600;
             margin-top: 1.5em;
-            opacity: 0.3;
+            color: #808081;
           }
         }
 
@@ -70,6 +69,22 @@ export const SettingsPageWrapper = styled(motion.div)<{
               box-shadow: 1px 1px 10px 4px #808980ad inset;
             }
           }
+        }
+      }
+    }
+  }
+
+  ${devices.phoneM} {
+    > .container {
+      > .list .list-item {
+        display: block;
+
+        > * + * {
+          margin-top: 1.5em;
+        }
+
+        .text {
+          max-width: 100%;
         }
       }
     }

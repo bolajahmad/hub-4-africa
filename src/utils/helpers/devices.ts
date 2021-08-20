@@ -3,7 +3,7 @@ const customMediaQuery = (maxWidth: number) =>
 
 export const devices = {
   custom: customMediaQuery,
-  tablet: customMediaQuery(768),
+  tablet: customMediaQuery(800),
   tabletM: customMediaQuery(900),
   laptop: customMediaQuery(1024),
   laptopM: customMediaQuery(1240),

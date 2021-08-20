@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const StyledInputWrapper = styled.div<{
-  width: number;
   white?: boolean;
 }>`
   display: flex;
@@ -9,7 +8,7 @@ export const StyledInputWrapper = styled.div<{
   position: relative;
   flex-direction: column;
   transition: all 0.5s ease-in;
-  font-size: ${({ width }) => (width <= 600 ? '0.75rem' : '1rem')};
+  font-size: 1rem;
 
   .label {
     display: block;
@@ -59,7 +58,7 @@ export const StyledInputWrapper = styled.div<{
     padding: 0.7em 0.85em;
     border: none;
     background: none;
-    font-size: ${({ width }) => (width < 500 ? '0.75em' : '1em')};
+    font-size: 1em;
     outline: none !important;
     min-width: 0;
     flex: 1;

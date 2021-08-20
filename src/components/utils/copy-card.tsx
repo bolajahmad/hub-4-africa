@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import { FiClipboard } from 'react-icons/fi';
 import styled from 'styled-components';
 import { TextButton } from '../buttons';
 
@@ -71,7 +72,7 @@ export const CopyCard: React.FC<Props> = ({ title, text, hoveredText }) => {
           className={`text__btn copy ${copied ? 'copied' : ''}`}
         >
           <span className={`text ${showHovered ? 'visually-hidden' : ''}`}>
-            {copied ? 'Copied' : text || 'Copy Key'}
+            {copied ? 'Copied' : text || <FiClipboard size="18" />}
           </span>
           <span className={`hovered ${showHovered ? '' : 'visually-hidden'}`}>{hoveredText}</span>
         </TextButton>

@@ -5,17 +5,16 @@ import { LoaderComponent } from '../../../components/utils';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { LoginModel } from '../../../models';
 import { StyledFormWrapper } from '../../../styles';
-import { LoginSchema, useWindowDimensions } from '../../../utils';
+import { LoginSchema } from '../../../utils';
 import { AuthPageWrapper } from '../components';
 
 export const LoginPage: React.FC = () => {
-  const { width } = useWindowDimensions();
   const { login, isLoading, error, isError } = useAuthContext()!;
 
   const logUserIn = (user: LoginModel) => login(user);
 
   return (
-    <AuthPageWrapper width={width}>
+    <AuthPageWrapper>
       <div className="container">
         <h1 className="bold-8">Welcome Back!</h1>
         <h4 className="bold-6 mt-3">Continue managing your account. Login as an admin</h4>
@@ -30,7 +29,7 @@ export const LoginPage: React.FC = () => {
         >
           {({ handleSubmit, isValid }) => {
             return (
-              <StyledFormWrapper onSubmit={handleSubmit} width={width}>
+              <StyledFormWrapper onSubmit={handleSubmit}>
                 <div className="main">
                   <TextInput name="email" white placeholder="Email Address" type="email" />
                   <TextInput name="password" white placeholder="Password" type="password" />

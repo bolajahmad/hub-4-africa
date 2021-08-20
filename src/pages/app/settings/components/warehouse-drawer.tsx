@@ -1,24 +1,21 @@
 import { Formik } from 'formik';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FiX } from 'react-icons/fi';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { MdEdit } from 'react-icons/md';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { SelectInput, TextButton, TextInput } from '../../../../components';
 import { LoaderComponent } from '../../../../components/utils';
 import { useNotificationContext } from '../../../../contexts/NotificationContext';
+import { WarehouseModel } from '../../../../models';
 import { UtilService } from '../../../../services';
 import { StyledFormWrapper } from '../../../../styles';
-import {
-  NotificationType,
-  UpdateWarehouseSchema,
-  useWindowDimensions,
-} from '../../../../utils';
+import { NotificationType, UpdateWarehouseSchema } from '../../../../utils';
 
 export const WarehouseDrawer: React.FC<{
   closeDrawer: () => void;
 }> = ({ closeDrawer }) => {
   const { addNotification } = useNotificationContext()!;
-  const { width } = useWindowDimensions();
+  const [editing, setEditing] = useState<WarehouseModel | undefined>();
   const queryClient = useQueryClient();
   const { mutate: addWarehouse } = useMutation(UtilService.createWarehouse, {
     onSuccess: ({ message }) => {
@@ -26,24 +23,14 @@ export const WarehouseDrawer: React.FC<{
       addNotification(NotificationType.SUCCESS, message);
     },
   });
-  const { data: warehouseData, isLoading: isFetching } = useQuery(
-    ['warehouses'],
-    UtilService.fetchWarehouse
-  );
-  const { data: countriesData } = useQuery(
-    ['countries'],
-    UtilService.fetchCountries
-  );
+  const { data: warehouseData, isLoading: isFetching } = useQuery(['warehouses'], UtilService.fetchWarehouse);
+  const { data: countriesData } = useQuery(['countries'], UtilService.fetchCountries);
 
   const countries = useMemo(
-    () =>
-      (countriesData?.payload || []) as { countryName: string; id: string }[],
+    () => (countriesData?.payload || []) as { countryName: string; id: string }[],
     [countriesData]
   );
-  const warehouses = useMemo(
-    () => warehouseData?.payload || [],
-    [warehouseData]
-  );
+  const warehouses = useMemo(() => warehouseData?.payload || [], [warehouseData]);
 
   return (
     <div className="content">
@@ -56,12 +43,23 @@ export const WarehouseDrawer: React.FC<{
       </h2>
 
       <Formik
-        initialValues={{
-          stateName: '',
-          address: '',
-          countryId: '',
-          pricePerKg: '',
-        }}
+        initialValues={
+          editing ?
+            {
+              id: editing.id,
+              stateName: editing.state,
+              address: editing.address,
+              pricePerKg: editing.pricePerKG.toString(),
+              countryId: '',
+            } :
+            {
+              stateName: '',
+              address: '',
+              countryId: '',
+              pricePerKg: '',
+            }
+        }
+        enableReinitialize
         validationSchema={UpdateWarehouseSchema}
         onSubmit={(model) => {
           addWarehouse({ ...model, pricePerKG: +model.pricePerKg });
@@ -69,7 +67,7 @@ export const WarehouseDrawer: React.FC<{
       >
         {({ handleSubmit, isValid }) => {
           return (
-            <StyledFormWrapper width={width} smaller onSubmit={handleSubmit}>
+            <StyledFormWrapper smaller onSubmit={handleSubmit}>
               <div className="main">
                 <TextInput name="stateName" placeholder="WareHouse Name" />
                 <TextInput name="address" placeholder="WareHouse City" />
@@ -85,11 +83,7 @@ export const WarehouseDrawer: React.FC<{
 
               <div className="footer mt-4">
                 <div>
-                  <button
-                    type="submit"
-                    disabled={!isValid}
-                    className="submit__btn"
-                  >
+                  <button type="submit" disabled={!isValid} className="submit__btn">
                     Update
                   </button>
                 </div>
@@ -113,12 +107,12 @@ export const WarehouseDrawer: React.FC<{
                 </div>
 
                 <div className="btns">
-                  <TextButton>
+                  <TextButton onClick={() => setEditing(warehouse)}>
                     <MdEdit size="14" color="#1DC286" />
                   </TextButton>
-                  <TextButton>
+                  {/* <TextButton>
                     <MdDelete size="14" color="#e02e2e" />
-                  </TextButton>
+                  </TextButton> */}
                 </div>
               </li>
             ))}

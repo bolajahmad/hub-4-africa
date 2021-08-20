@@ -1,3 +1,5 @@
+import { WarehouseModel } from './utils.model';
+
 export interface LoginModel {
   email: string;
   password: string;
@@ -30,4 +32,5 @@ export interface AuthenticatedUser {
   updatedAt: string;
   userName: string;
   wallet: UserWalletDetails;
+  warehouse: WarehouseModel;
 }

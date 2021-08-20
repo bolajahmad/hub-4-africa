@@ -1,18 +1,16 @@
-import { useFormik } from 'formik';
 import { motion } from 'framer-motion';
 import React, { useMemo, useState } from 'react';
 import { BsInfoSquareFill } from 'react-icons/bs';
 import { IoReloadSharp } from 'react-icons/io5';
-import { useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 import { TextButton } from '../../../../components';
-import { LoaderComponent, Popup } from '../../../../components/utils';
-import { useNotificationContext } from '../../../../contexts/NotificationContext';
+import { LoaderComponent } from '../../../../components/utils';
 import { OrdersModel } from '../../../../models';
 import { OrdersService } from '../../../../services';
-import { StyledFormWrapper, StyledInputWrapper } from '../../../../styles';
-import { NotificationType, useWindowDimensions } from '../../../../utils';
+import { devices } from '../../../../utils';
+import { UpdateAmountModal } from '../components';
 
 const PageWrapper = styled(motion.div)`
   width: 100%;
@@ -102,162 +100,31 @@ const PageWrapper = styled(motion.div)`
       }
     }
   }
-`;
 
-const ModalWrapper = styled.div`
-  width: 100%;
-  background-color: white;
-  max-width: 30em;
-  min-width: 25em;
-  width: 40em;
+  ${devices.phoneM} {
+    .orders-list > li {
+      h3 {
+        display: initial;
 
-  > * {
-    padding: 1em 4em;
-  }
+        span {
+          display: inline-block;
+        }
+      }
 
-  > * + * {
-    border-top: 1px solid rgba(234, 234, 234, 0.49);
-  }
-
-  > .header {
-    text-align: center;
-    padding: 1em 2em;
-  }
-
-  .list {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    font-weight: 700;
-    text-transform: capitalize;
+      .details {
+        flex-direction: column;
+      }
+    }
   }
 `;
 
 export const PendingOrdersView: React.FC = () => {
-  const { addNotification } = useNotificationContext()!;
   const [orderSelected, setOrder] = useState<OrdersModel | undefined>();
-  const { width } = useWindowDimensions();
-  const {
-    data,
-    isLoading: isFetching,
-    refetch,
-  } = useQuery(['pending-orders'], OrdersService.fetchPendingOrders);
-  const { mutate, isLoading, isError, error } = useMutation(
-    OrdersService.orderEstimate,
-    {
-      onSuccess: (response) => {
-        setOrder(undefined);
-        addNotification(NotificationType.SUCCESS, 'Order Updated Successfully');
-      },
-    }
-  );
+  const { data, isLoading: isFetching, refetch } = useQuery(['pending-orders'], OrdersService.fetchPendingOrders);
   const pendingOrders = useMemo(() => data?.payload || [], [data]);
 
-  const {
-    values: { weight },
-    handleChange,
-    handleBlur,
-    resetForm,
-  } = useFormik({
-    initialValues: { weight: '' },
-    onSubmit: (model) => console.log(model),
-  });
-
   if (orderSelected) {
-    return (
-      <Popup
-        close={() => {
-          resetForm();
-          setOrder(undefined);
-        }}
-      >
-        <ModalWrapper>
-          <h3 className="header">Enter Total Goods Weight</h3>
-
-          <StyledInputWrapper width={width}>
-            <div className="body">
-              <input
-                type="number"
-                name="weight"
-                value={weight}
-                placeholder="Enter weight"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                className="input"
-              />
-            </div>
-
-            {isError && (
-              <span className="error-message centered">
-                {(error as any)?.message}
-              </span>
-            )}
-            <span
-              style={{ marginTop: '3em', fontSize: '0.7em', fontWeight: 500 }}
-            >
-              Order Details
-            </span>
-          </StyledInputWrapper>
-
-          <div className="list">
-            <span style={{ opacity: 0.6, fontWeight: 400 }}>
-              Sending Location
-            </span>
-            <span>
-              {orderSelected?.warehouse?.address},{' '}
-              {orderSelected?.warehouse?.state}
-            </span>
-          </div>
-          <div className="list">
-            <span style={{ opacity: 0.6, fontWeight: 400 }}>
-              Package Conditions
-            </span>
-            <span>
-              {orderSelected.packageConditions
-                .map(({ packageConditionName }) => packageConditionName)
-                .join(', ') ?? 'Not Specified'}
-            </span>
-          </div>
-          <div className="list">
-            <span style={{ opacity: 0.6, fontWeight: 400 }}>
-              Receiver&rsquo;s Location
-            </span>
-            <span>
-              {orderSelected.pickupLocalGovt},&nbsp;{orderSelected.pickupState}
-            </span>
-          </div>
-          <div className="list">
-            <span style={{ opacity: 0.6, fontWeight: 400 }}>Package Size</span>
-            <span>{orderSelected.packageSize}kg</span>
-          </div>
-
-          <StyledFormWrapper width={width}>
-            <div className="footer">
-              <div
-                style={{
-                  maxWidth: '12em',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() =>
-                    mutate({
-                      orderId: orderSelected.id,
-                      weight: Number(weight),
-                    })
-                  }
-                  className="submit__btn"
-                >
-                  {isLoading ? <LoaderComponent /> : 'Update Amount'}
-                </button>
-              </div>
-            </div>
-          </StyledFormWrapper>
-        </ModalWrapper>
-      </Popup>
-    );
+    return <UpdateAmountModal orderSelected={orderSelected} setOrder={setOrder} />;
   }
 
   return (
