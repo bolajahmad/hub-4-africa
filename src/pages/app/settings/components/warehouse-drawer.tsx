@@ -17,12 +17,7 @@ export const WarehouseDrawer: React.FC<{
   const { addNotification } = useNotificationContext()!;
   const [editing, setEditing] = useState<WarehouseModel | undefined>();
   const queryClient = useQueryClient();
-  const { mutate: addWarehouse } = useMutation(UtilService.createWarehouse, {
-    onSuccess: ({ message }) => {
-      queryClient.invalidateQueries('warehouses');
-      addNotification(NotificationType.SUCCESS, message);
-    },
-  });
+  const { mutate: addWarehouse, isLoading: isSubmitting, error, isError } = useMutation(UtilService.createWarehouse);
   const { data: warehouseData, isLoading: isFetching } = useQuery(['warehouses'], UtilService.fetchWarehouse);
   const { data: countriesData } = useQuery(['countries'], UtilService.fetchCountries);
 
@@ -50,7 +45,7 @@ export const WarehouseDrawer: React.FC<{
               stateName: editing.state,
               address: editing.address,
               pricePerKg: editing.pricePerKG.toString(),
-              countryId: '',
+              countryId: editing.country.id,
             } :
             {
               stateName: '',
@@ -61,8 +56,18 @@ export const WarehouseDrawer: React.FC<{
         }
         enableReinitialize
         validationSchema={UpdateWarehouseSchema}
-        onSubmit={(model) => {
-          addWarehouse({ ...model, pricePerKG: +model.pricePerKg });
+        onSubmit={(model, { resetForm }) => {
+          addWarehouse(
+            { ...model, pricePerKG: +model.pricePerKg },
+            {
+              onSuccess: ({ message }) => {
+                queryClient.invalidateQueries('warehouses');
+                resetForm();
+                setEditing(undefined);
+                addNotification(NotificationType.SUCCESS, message);
+              },
+            }
+          );
         }}
       >
         {({ handleSubmit, isValid }) => {
@@ -81,10 +86,12 @@ export const WarehouseDrawer: React.FC<{
                 <TextInput name="pricePerKg" placeholder="Standard Rate" />
               </div>
 
+              {isError && <div className="error-message">{(error as any)?.message}</div>}
+
               <div className="footer mt-4">
                 <div>
                   <button type="submit" disabled={!isValid} className="submit__btn">
-                    Update
+                    {isSubmitting ? <LoaderComponent /> : 'Update'}
                   </button>
                 </div>
               </div>
@@ -98,7 +105,7 @@ export const WarehouseDrawer: React.FC<{
         {isFetching ? (
           <LoaderComponent />
         ) : (
-          <ul className="list">
+          <ul className="list" style={{ maxHeight: '13em' }}>
             {warehouses.map((warehouse) => (
               <li key={warehouse.id}>
                 <div className="text">

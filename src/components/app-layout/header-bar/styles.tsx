@@ -18,7 +18,7 @@ export const HeaderStyleWrapper = styled.div<{
     justify-content: flex-start;
     font-weight: 800;
     gap: 20px;
-    transform: ${({ sidebarOpen }) => (sidebarOpen ? 'translateX(155px)' : 'translateX(0)')};
+    transform: translateX(0);
     transition: transform 250ms ease-in, width 200ms ease-in;
 
     .logo {
@@ -46,6 +46,7 @@ export const HeaderStyleWrapper = styled.div<{
     .header-title .logo {
       display: inline-block;
       max-width: 7em;
+      transform: ${({ sidebarOpen }) => (sidebarOpen ? 'translateX(155px)' : 'translateX(0)')};
     }
 
     .menu {
