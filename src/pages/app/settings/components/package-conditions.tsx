@@ -61,7 +61,7 @@ export const PackageConditionsDrawer: React.FC<{
         {isFetching ? (
           <LoaderComponent />
         ) : (
-          <ul className="list">
+          <ul className="list" style={{ maxHeight: '17em' }}>
             {conditions.map(({ packageConditionName, id }) => (
               <li key={id}>
                 <div className="text">

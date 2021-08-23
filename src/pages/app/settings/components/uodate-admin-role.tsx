@@ -2,23 +2,26 @@ import { Formik } from 'formik';
 import React, { useMemo, useState } from 'react';
 import { FiX } from 'react-icons/fi';
 import { MdEdit } from 'react-icons/md';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { SelectInput, TextButton, TextInput } from '../../../../components';
 import { LoaderComponent } from '../../../../components/utils';
+import { useNotificationContext } from '../../../../contexts/NotificationContext';
 import { Admins } from '../../../../models/admins';
 import { DashboardService, UtilService } from '../../../../services';
 import { StyledFormWrapper } from '../../../../styles';
-import { generateID, UpdateAdminSchema } from '../../../../utils';
+import { generateID, NotificationType, UpdateAdminSchema } from '../../../../utils';
 
 export const AdminRoleDrawer: React.FC<{
   closeDrawer: () => void;
 }> = ({ closeDrawer }) => {
-  const { mutate: createAdmin, isLoading: isSubmitting } = useMutation(DashboardService.createAdmin);
+  const { addNotification } = useNotificationContext()!;
+  const { mutate: createAdmin, isLoading: isSubmitting, isError, error } = useMutation(DashboardService.createAdmin);
   const { data: adminData, isLoading } = useQuery(['admins'], DashboardService.getAdmins);
   const { data: warehouseData } = useQuery(['warehouses'], UtilService.fetchWarehouse);
   const warehouses = useMemo(() => warehouseData?.payload || [], [warehouseData]);
   const admins = useMemo(() => adminData?.payload || [], [adminData]);
   const [isEditing, setEditing] = useState<Admins | undefined>();
+  const queryClient = useQueryClient();
 
   return (
     <div className="content">
@@ -34,21 +37,32 @@ export const AdminRoleDrawer: React.FC<{
         initialValues={
           isEditing ?
             {
-              ...isEditing,
-              warehouseId: isEditing.warehouse.id as string,
+              fullName: isEditing.fullName,
+              email: isEditing.email,
+              phoneNumber: isEditing.phoneNumber,
+              warehouseId: isEditing.warehouse.id,
+              password: '',
             } :
             {
               fullName: '',
               email: '',
               warehouseId: '',
+              phoneNumber: '',
               password: '',
             }
         }
         enableReinitialize
         validationSchema={UpdateAdminSchema}
-        onSubmit={(model) => {
+        onSubmit={(model, { resetForm }) => {
           model.password = generateID(10) as string;
-          createAdmin(model);
+          createAdmin(model, {
+            onSuccess: ({ message }) => {
+              queryClient.invalidateQueries('admins');
+              resetForm();
+              setEditing(undefined);
+              addNotification(NotificationType.SUCCESS, message);
+            },
+          });
         }}
       >
         {({ handleSubmit, isValid }) => {
@@ -57,18 +71,19 @@ export const AdminRoleDrawer: React.FC<{
               <div className="main">
                 <TextInput name="fullName" placeholder="Full Name" />
                 <TextInput name="email" placeholder="Email Address" />
+                <TextInput type="tel" name="phoneNumber" placeholder="Phone Number" />
                 {warehouses?.length ? (
                   <SelectInput
                     name="warehouseId"
                     options={warehouses}
-                    valueProp="state"
-                    displayProp="address"
-                    placeholder={
-                      isEditing ? isEditing.warehouse.address + ',' + isEditing.warehouse.state : 'Assigned Warehouse'
-                    }
+                    valueProp="id"
+                    displayProp="state"
+                    placeholder="Assigned Warehouse"
                   />
                 ) : null}
               </div>
+
+              {isError && <div className="error-message">{(error as any)?.message}</div>}
 
               <div className="footer mt-4">
                 <div>
@@ -87,7 +102,7 @@ export const AdminRoleDrawer: React.FC<{
         {isLoading ? (
           <LoaderComponent />
         ) : (
-          <ul className="list">
+          <ul className="list" style={{ maxHeight: '15em' }}>
             {admins.map((admin) => (
               <li key={admin.id}>
                 <div className="text">

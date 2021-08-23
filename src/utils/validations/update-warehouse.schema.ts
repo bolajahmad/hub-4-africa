@@ -15,5 +15,6 @@ export const UpdateConditionSchema = Yup.object().shape({
 export const UpdateAdminSchema = Yup.object().shape({
   fullName: Yup.string().required('Please provide admin name'),
   email: Yup.string().email().required('Email must be provided'),
+  phoneNumber: Yup.string().required('Phone number is requires'),
   warehouseId: Yup.string().required('Warehouse must be provided'),
 });
