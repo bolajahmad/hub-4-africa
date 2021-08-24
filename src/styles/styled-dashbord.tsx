@@ -38,14 +38,17 @@ export const StyledDashboard = styled(motion.div)`
         padding: 1em;
         border-color: #c4c4c4;
 
-        &:nth-child(2) {
-          border-left: 1px solid;
+        &:nth-child(2n) {
           border-bottom: 1px solid;
         }
 
-        &:nth-child(3) {
+        &:nth-child(2n + 1) {
           border-top: 1px solid;
           border-right: 1px solid;
+        }
+
+        &:nth-child(1) {
+          border-top: none;
         }
       }
 

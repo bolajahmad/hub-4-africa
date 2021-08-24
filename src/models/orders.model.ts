@@ -1,16 +1,16 @@
 export type OrderStatsType =
   | 'pending'
   | 'fulfilled'
+  | 'awaitingShipment'
   | 'rejected'
   | 'transactions';
 
 export interface OrderStatsModel {
   name: string;
-  id: string;
+  id: OrderStatsType;
   value: number;
   color: string;
   icon: string;
-  link?: string;
 }
 
 export interface RequestPriceEstimateModel {
