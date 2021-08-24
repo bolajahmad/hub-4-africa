@@ -7,12 +7,12 @@ export class DashboardService {
     return ApiClient.get<OrdersModel[]>('admin/all-shipped-orders');
   }
 
-  public static allRejectedOrders() {
-    return ApiClient.get<OrdersModel[]>('admin/all-rejected-orders');
+  public static allRejectedOrders(id?: string) {
+    return ApiClient.get<OrdersModel[]>(`admin/all-rejected-orders${id ? '?warehouseId=' + id : ''}`);
   }
 
-  public static allCOmpletedOrders() {
-    return ApiClient.get<OrdersModel[]>('admin/all-completed-orders');
+  public static allCompletedOrders(id?: string) {
+    return ApiClient.get<OrdersModel[]>(`admin/all-completed-orders${id ? ' ? warehouseId = ' + id : ''}`);
   }
 
   public static fetchOrderStats() {

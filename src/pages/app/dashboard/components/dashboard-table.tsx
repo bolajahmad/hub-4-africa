@@ -6,22 +6,24 @@ import { CopyCard, CustomDropdown, CustomDropdownItem, LoaderComponent } from '.
 import { useNotificationContext } from '../../../../contexts/NotificationContext';
 import { OrdersModel } from '../../../../models';
 import { OrdersService, UtilService } from '../../../../services';
-import { DashboardService } from '../../../../services/dashboard.service';
 import { StyledProgressWrapper } from '../../../../styles';
 import { NotificationType, OrderStatuses, usePageMatch } from '../../../../utils';
 import { MobileTable } from './mobile-table';
 
-export const DashboardTable: React.FC = () => {
+interface Props {
+  orders: OrdersModel[];
+  isLoading?: boolean;
+}
+
+export const DashboardTable: React.FC<Props> = ({ orders, isLoading }) => {
   const { addNotification } = useNotificationContext()!;
   const { matches: isMobile } = usePageMatch('(max-width: 900px)');
   const { data: statusData } = useQuery(['order-status'], UtilService.fetchOrderStatus);
-  const { data: ordersData, isLoading } = useQuery(['orders'], DashboardService.fetchAllOrders);
   const { mutate } = useMutation(OrdersService.updateOrderStatus, {
     onError: (error) => {
       addNotification(NotificationType.ERROR, (error as any)?.message);
     },
   });
-  const orders = useMemo(() => (ordersData?.payload ?? []) as OrdersModel[], [ordersData]);
   const status = useMemo(() => (statusData?.payload ?? []) as { id: number; name: string }[], [statusData]);
 
   return (
@@ -73,12 +75,15 @@ export const DashboardTable: React.FC = () => {
             { Header: 'Receiver\'s Name', accessor: 'receiverName' },
             {
               Header: 'Progress Status',
-              accessor: ({ paymentStatus }: OrdersModel) => (
+              accessor: ({ paymentStatus, orderStatus }: OrdersModel) => (
                 <StyledProgressWrapper
                   color={paymentStatus === 0 ? '#F33B3B' : paymentStatus === 1 ? '#FFD039' : '#0EBE7E'}
                 >
                   <div className="circle"></div>
-                  Ready for Delivery
+                  {OrderStatuses.find(({ id: status }) => status === orderStatus)
+                    ?.name.toLowerCase()
+                    .split('_')
+                    .join(' ')}
                 </StyledProgressWrapper>
               ),
             },

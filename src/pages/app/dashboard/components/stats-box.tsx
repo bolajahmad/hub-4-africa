@@ -1,6 +1,5 @@
 import React from 'react';
 import CountUp from 'react-countup';
-import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import ArrowDownSquare from '../../../../assets/images/arrow-down-square.svg';
 import ArrowUpSquare from '../../../../assets/images/arrow-up-square.svg';
@@ -11,11 +10,10 @@ import { OrderStatsModel } from '../../../../models';
 
 export const dashboardStats: OrderStatsModel[] = [
   {
-    name: 'Pending Orders',
-    id: 'pending',
+    name: 'Awaiting Shipment',
+    id: 'awaitingShipment',
     value: 0,
-    link: '/orders/all',
-    color: 'rgba(255, 208, 57, 0.1)',
+    color: 'rgba(255, 70, 57, 0.1)',
     icon: ArrowDownSquare,
   },
   {
@@ -73,8 +71,8 @@ const Wrapper = styled.div`
 const IconStyle = styled.div<{
   color: string;
 }>`
-  width: 3em;
-  height: 3em;
+  min-width: 3em;
+  min-height: 3em;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -85,13 +83,12 @@ const IconStyle = styled.div<{
 
 export interface DashboardStatsProps extends OrderStatsModel {
   isLoading?: boolean;
+  handleClick?: () => void;
 }
 
-export const StatsBox: React.FC<DashboardStatsProps> = ({ name, value, color, icon, isLoading, link }) => {
-  const history = useHistory();
-
+export const StatsBox: React.FC<DashboardStatsProps> = ({ name, value, color, icon, isLoading, handleClick }) => {
   return (
-    <Wrapper onClick={() => link && history.push(link)}>
+    <Wrapper onClick={handleClick}>
       <IconStyle color={color}>
         <img src={icon} alt="" />
       </IconStyle>
