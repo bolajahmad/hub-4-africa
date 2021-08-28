@@ -31,6 +31,13 @@ export const dashboardStats: OrderStatsModel[] = [
     color: 'rgba(255, 71, 87, 0.1)',
   },
   {
+    name: 'Shipped Orders',
+    id: 'Shipped',
+    value: 0,
+    icon: OrdersSquare,
+    color: 'rgba(138, 255, 71, 0.1)',
+  },
+  {
     name: 'Total Transactions',
     id: 'transactions',
     icon: WalletIcon,

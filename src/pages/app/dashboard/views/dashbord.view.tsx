@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import ArrowDownSquare from '../../../../assets/images/arrow-down-square.svg';
-import { OrdersModel, OrderStatsModel, OrderStatsType } from '../../../../models';
+import { OrderStatsModel, OrderStatsType } from '../../../../models';
 import { DashboardService } from '../../../../services/dashboard.service';
 import { StyledDashboard } from '../../../../styles';
 import { DashboardTable } from '../components';
@@ -14,40 +14,12 @@ const Wrapper = styled(StyledDashboard)``;
 export const DashboardView: React.FC = () => {
   const history = useHistory();
   const [filterBy, setFilterBy] = useState<OrderStatsType>('transactions');
-  const { data: statsData, isLoading: loadingStats } = useQuery(['order-stats'], DashboardService.fetchOrderStats, {
-    enabled: filterBy === 'transactions',
-  });
-  const { data: completedOrders, isLoading: loadingCompleted } = useQuery(
-    ['completed-orders'],
-    () => DashboardService.allCompletedOrders(),
-    {
-      enabled: filterBy === 'fulfilled',
-    }
+  const { data: statsData, isLoading: loadingStats } = useQuery(['order-stats'], DashboardService.fetchOrderStats);
+  const { data: ordersData, isLoading } = useQuery(['orders', filterBy], () =>
+    DashboardService.fetchAllOrders(filterBy)
   );
-  const { data: rejectedOrders, isLoading: loadingrejected } = useQuery(
-    ['rejected-orders'],
-    () => DashboardService.allRejectedOrders(),
-    {
-      enabled: filterBy === 'rejected',
-    }
-  );
-  const { data: ordersData, isLoading: loadingAllOrders } = useQuery(['orders'], DashboardService.fetchAllOrders);
 
-  const { orders, isLoading } = useMemo(() => {
-    switch (filterBy) {
-    case 'awaitingShipment':
-      const orders = (ordersData?.payload ?? []).filter(
-        ({ paymentStatus, orderStatus }) => paymentStatus > 0 && orderStatus === 2
-      );
-      return { orders, isLoading: false };
-    case 'rejected':
-      return { orders: (rejectedOrders?.payload ?? []) as OrdersModel[], isLoading: loadingrejected };
-    case 'fulfilled':
-      return { orders: (completedOrders?.payload ?? []) as OrdersModel[], isLoading: loadingCompleted };
-    default:
-      return { orders: (ordersData?.payload ?? []) as OrdersModel[], isLoading: loadingAllOrders };
-    }
-  }, [ordersData, filterBy]);
+  const orders = useMemo(() => ordersData?.payload ?? [], [ordersData]);
   const pendings: OrderStatsModel = useMemo(
     () => ({
       name: 'Pending Orders',

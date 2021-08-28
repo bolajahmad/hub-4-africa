@@ -171,7 +171,7 @@ export const PendingOrdersView: React.FC = () => {
                   </ul>
                 </div>
                 <div className="btn-box">
-                  <button onClick={() => setOrder(order)}>RECEIVED GOOD</button>
+                  {order.paymentStatus === 0 ? <button onClick={() => setOrder(order)}>RECEIVED GOOD</button> : null}
                 </div>
               </li>
             ))

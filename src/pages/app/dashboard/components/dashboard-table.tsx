@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import ReactTooltip from 'react-tooltip';
 import { PrimaryTable } from '../../../../components';
 import { CopyCard, CustomDropdown, CustomDropdownItem, LoaderComponent } from '../../../../components/utils';
@@ -17,14 +17,36 @@ interface Props {
 
 export const DashboardTable: React.FC<Props> = ({ orders, isLoading }) => {
   const { addNotification } = useNotificationContext()!;
+  const { invalidateQueries } = useQueryClient();
+  const [isUpdating, setUpdating] = useState<string | undefined>();
   const { matches: isMobile } = usePageMatch('(max-width: 900px)');
   const { data: statusData } = useQuery(['order-status'], UtilService.fetchOrderStatus);
   const { mutate } = useMutation(OrdersService.updateOrderStatus, {
+    onMutate: (variables) => {
+      setUpdating(variables.orderId);
+    },
     onError: (error) => {
+      setUpdating(undefined);
       addNotification(NotificationType.ERROR, (error as any)?.message);
+    },
+    onSuccess: () => {
+      setUpdating(undefined);
+      invalidateQueries('orders');
     },
   });
   const status = useMemo(() => (statusData?.payload ?? []) as { id: number; name: string }[], [statusData]);
+  const ratio = useCallback((status: number) => {
+    switch (status) {
+      case 2:
+        return 0.5;
+      case 3:
+        return 0.75;
+      case 4:
+        return 1;
+      default:
+        return 0.25;
+    }
+  }, []);
 
   return (
     <React.Fragment>
@@ -77,6 +99,7 @@ export const DashboardTable: React.FC<Props> = ({ orders, isLoading }) => {
               Header: 'Progress Status',
               accessor: ({ paymentStatus, orderStatus }: OrdersModel) => (
                 <StyledProgressWrapper
+                  ratio={ratio(orderStatus)}
                   color={paymentStatus === 0 ? '#F33B3B' : paymentStatus === 1 ? '#FFD039' : '#0EBE7E'}
                 >
                   <div className="circle"></div>
@@ -92,7 +115,13 @@ export const DashboardTable: React.FC<Props> = ({ orders, isLoading }) => {
               accessor: ({ orderStatus, id: orderId }: OrdersModel) => (
                 <CustomDropdown
                   triggerComponent={() => (
-                    <span>{OrderStatuses.find(({ id: status }) => status === orderStatus)?.display}</span>
+                    <span>
+                      {isUpdating === orderId ? (
+                        <LoaderComponent size={1} borderWidth={2} headColor="#c4c4c4" bodyColor="#f0f5ef" />
+                      ) : (
+                        OrderStatuses.find(({ id: status }) => status === orderStatus)?.display
+                      )}
+                    </span>
                   )}
                 >
                   {status.map(({ name, id }) => (

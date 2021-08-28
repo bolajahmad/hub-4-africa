@@ -3,16 +3,26 @@ import { CreateAdminModel, OrdersModel, OrderStatsType } from '../models';
 import { Admins } from '../models/admins';
 
 export class DashboardService {
-  public static fetchAllOrders() {
-    return ApiClient.get<OrdersModel[]>('admin/all-shipped-orders');
-  }
-
-  public static allRejectedOrders(id?: string) {
-    return ApiClient.get<OrdersModel[]>(`admin/all-rejected-orders${id ? '?warehouseId=' + id : ''}`);
-  }
-
-  public static allCompletedOrders(id?: string) {
-    return ApiClient.get<OrdersModel[]>(`admin/all-completed-orders${id ? ' ? warehouseId = ' + id : ''}`);
+  public static fetchAllOrders(type?: OrderStatsType, warehouseId?: string) {
+    let url: string;
+    switch (type) {
+      case 'awaitingShipment':
+        url = 'admin/all-un-shipped';
+        break;
+      case 'fulfilled':
+        url = 'admin/all-completed-orders';
+        break;
+      case 'rejected':
+        url = 'admin/all-rejected-orders';
+        break;
+      case 'Shipped':
+        url = 'admin/all-shipped-orders';
+        break;
+      default:
+        url = 'admin/all-orders';
+        break;
+    }
+    return ApiClient.get<OrdersModel[]>(`${url}${warehouseId ? ' ? warehouseId = ' + warehouseId : ''}`);
   }
 
   public static fetchOrderStats() {
