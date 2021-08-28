@@ -3,7 +3,8 @@ export type OrderStatsType =
   | 'fulfilled'
   | 'awaitingShipment'
   | 'rejected'
-  | 'transactions';
+  | 'transactions'
+  | 'Shipped';
 
 export interface OrderStatsModel {
   name: string;

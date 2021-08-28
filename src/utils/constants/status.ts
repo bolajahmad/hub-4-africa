@@ -2,7 +2,7 @@ export const OrderStatuses = [
   {
     id: 0,
     name: 'NOT_YET_RECEIVED_AT_OVERSEAS_WAREHOUSE',
-    display: 'Not received'
+    display: 'Not Received'
   },
   {
     id: 1,
@@ -22,7 +22,7 @@ export const OrderStatuses = [
   {
     id: 4,
     name: 'SHIPPED_TO_RECEIVER',
-    display: 'Shipped'
+    display: 'Delivered'
   },
   {
     id: -1,

@@ -70,7 +70,13 @@ const CustomDropdownMenu = styled.div`
   width: 100%;
   z-index: 100;
   min-width: 120px;
+  max-height: 15em;
+  overflow: auto;
   right: 0;
+
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
 `;
 
 interface Props {
