@@ -68,14 +68,15 @@ const PageWrapper = styled(StyledDashboard)`
     display: grid;
     align-items: center;
     justify-content: flex-start;
-    grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(13em, 1fr));
+    gap: 25px;
   }
 
   .order-nav {
     background-color: white;
     border: 1px solid #eaeaea;
     padding: 1em;
+    font-size: 1rem;
     padding-right: 2em;
     cursor: pointer;
 
@@ -158,12 +159,12 @@ export const OrdersView: React.FC = () => {
           <motion.button
             key={i}
             className="order-nav"
-            transition={{ duration: 0.4, ease: [0.17, 0.67, 0.83, 0.67] }}
+            transition={{ duration: 0.3, ease: [0.17, 0.67, 0.83, 0.67] }}
             onClick={() => history.push(link)}
             whileHover={{
-              y: -3,
-              x: -2,
-              transform: 'scale(1.025)',
+              y: -5,
+              x: -4,
+              transform: 'scale(1.035)',
               boxShadow: '1px 1px 1px #eaeaea',
             }}
           >
