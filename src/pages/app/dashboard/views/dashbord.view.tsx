@@ -43,7 +43,7 @@ export const DashboardView: React.FC = () => {
           };
         });
 
-      return actualData;
+      return actualData.sort((a, b) => a.id.localeCompare(b.id));
     } else {
       return dashboardStats;
     }
